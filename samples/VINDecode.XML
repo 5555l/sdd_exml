@@ -1,0 +1,3075 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE VINDecode []>
+<!--******************************************************-->
+<!--	File: VINDecode.xml -->
+<!--	Author: Richard Potts (rpotts7@jaguarlandrover.com) -->
+<!--	Date: 23-Oct-2006 -->
+<!--	-->	
+<!--	Last update: 10-Jan-2014 -->
+<!--	-->
+<!--	Version	Date		Description -->
+<!--	1.0	23-Oct-2006	First Release - Transmission Decodes normalized across models -->
+<!--	2.0	23-Oct-2006	Total Redesign 								-->
+<!--	3.0	25-Oct-2006	Jagauar Data updated to latest spec.		-->
+<!--	4.0	30-Oct-2006	Trim and Body Style Added 					-->
+<!--	5.0	23-Nov-2006	Freelander SAL F VIN model 12, 13 			-->
+<!--	6.0	08-Dec-2006	New Freelander VIN data modified 			-->
+<!--				Model 13 removed, markets all merged into 12 	-->
+<!--				Models 10, 11 - old Freelander 					-->
+<!--	7.0	14-Oct-2006	L319-07 Issue G, L319-08 Issue C 			-->
+<!--	8.0	21-Feb-2007	L322, L320 models updated 					-->
+<!--	9.0	19-Mar-2007	New L359 commercial added 					-->
+<!--				comment separators introduced 					-->
+<!--	10.0	01-May-2007	Old Freelander model changed to L314 	-->
+<!--	11.0	17-Jun-2007	Note about adding VIN decode that only uses 4 chars -->
+<!--	12.0	01-Aug-2007 	X250 Added, XSD added 				-->
+<!--	13.0	05-Sep-2007	L322 update 							-->
+<!--	14.0	11-Sep-2007	L319/L320 data updated - new engines/Armoured-->
+<!--	15.0	05-Oct-2007	Jaguar data updated as per Issue 32 	-->
+<!--	16.0	19-Oct-2007	Jaguar data updated as per Issue 33 - X350, X351 differentiation-->
+<!--				Need to use Combination of cols 6,7 and col 11 	-->
+<!--				X300 Col 11 will always be A,B or D 			-->
+<!--				L359 - F09MY_A.xls Issue:10 16-Oct-2007 - no change-->
+<!--				Algorithm needs to change or we change the data structure-->
+<!--	17.0	18-Jan-2008	L322 MY09 update 						-->
+<!--	18.0	19-Feb-2008	L319 MY09 update AND Jaguar Issue 34 update-->
+<!--	19.0	23-Apr-2008	Jaguar data updated as per Issue 35, 36	(26-Mar-2008)-->
+<!-- 	20.0	09-May-2008	L319 09MY VIN Charts Issue E.XLS 		-->
+<!--				Jaguar Gloval VIN update 37 (1 May) 			-->
+<!--	21.0	03-Feb-2009	Updated Landrover   \ L320 \ L359 	-->
+<!--	22.0	11-Mar-2009	Updated Jaguar X351 				-->
+<!--	23.0	07-Apr-2009	Updated Land Rover L322	- Issue C.xls -->
+<!--	24.0	08-Apr-2009	Updated Land Rover L316	- Issue E.xls (Model Year updated)-->
+<!--	25.0	14-May-2009	Updated LF11MY_C - LF10MY_D 			-->
+<!--	26.0	06-Aug-2009	Updated X351 fields "Supersport" Decode 7-->
+<!--	27.0	22-Sep-2009	Updated T5 updated "Issue C Release" -->
+<!--	28.0	07-Oct-2009	Updated L322 "ADMS WD-97" and "T5 10MY and 11MY VINs"-->
+<!--	29.0	17-Nov-2009	Updated L322 11 model year and Jaguar X150/X250/X351"-->
+<!--	29.0	01-Dec-2009	Updated SDD changes "Outside offical decode"-->
+<!--	29.0	21-Jan-2010	L359 new power levels added into decode"-->
+<!--	29.0	02-Feb-2010	L316 11 Model Year F-->
+<!--	30.0	28-Jun-2010	X351 - X300 Seperation for Model Decode 2 added-->
+<!--	31.0	23-Sep-2010	VIN decode model '12','14' only Amendment: -->
+<!--				<Value Value="G" Decode="306DT - V6 3.0 Diesel with cDPF"> amended to-->
+<!--				<Value Value="G" Decode="306DT - V6 3.0 Diesel with cDPF - High power">-->
+<!--	32.0	01-Feb-2011	Full Re_Struture of the XML See Resovle details below. Updated X250, X351. Added X152, L538 Vaules-->
+<!--				1 - Start in the Models section-->
+<!--				2 - Get the next VIN node (if no more VIN nodes return 'unknown vehicle')-->
+<!--				3 - Evaluate all the test nodes for the VIN node-->
+<!--				(Although there is only one Test node per VIN node in the example file it is possible to have multiple Test nodes)-->
+<!--				4 - If any test node fails return to Step 2--> 
+<!--				5 - All test nodes pass extract the decodemodel attribute from the VIN node-->
+<!--				6 - Goto the corresponding decodeModel in the decodes section-->
+<!--				7 - If further decode step required return to Step 2-->
+<!--				8 - Extract vehicle information-->
+<!--	33.0	10-May-2011	X250 BODY TYPE CODE 0A added-->
+<!--	34.0	19-May-2011	L538 Evoque changes - Brand name changed from Range Rover to Land Rover-->
+<!--	35.0	25-May-2011	X250 changes / Document header changed-->
+<!--	36.0	26-May-2011	L316 Defender changes-->
+<!--	37.0	02-Jun-2011	L359 New Freelander changes-->
+<!--	38.0	08-Jul-2011	L320 RR Sport changes-->
+<!--	39.0	17-Aug-2011	L316 Defender changes - See Release Note-->
+<!--	40.0	19-Sep-2011	L320 RR Sport changes:-->
+<!--					<Value Value="2" Decode="368DT - V8 Diesel (China)"></Value> amended to-->
+<!--				 	<Value Value="2" Decode="368DT - V8 Diesel 3.6 Diesel (China)"></Value> -->
+<!--	43.0	20-Feb-2012	L405 Vehicle Added, X250,X351,L359 13MY Added -->
+<!--	44.0	13-Jun-2012 X152, L359, L538 Updated, X351 New Portfolio Added, L316 Thailand added to Plant -->
+<!--	46.0	28-Sep-2012 X250 T Added for Pune India Builds -->
+<!--	48.0	10-Jan-2013 L319 Changes -->
+<!--					<Value Value="N" Decode="306DT - V6 3.0 Lo Pwr Diesel non cDPF"></Value> -->
+<!--	49.0	10-Jan-2013 L405/L494/X250/X351 14MY Changes -->
+<!--	54.0	27-Nov-2013 L550 Added -->
+<!--	58.0	15-Apr-2014 X760 Added, also model name given (XE) -->
+<!--****************************************************************************************************************************************-->
+
+<!--  Engine types should  be compatible with RDS values.-->
+
+<!--  Model names to be compatible with RDS.-->
+<!--Note if you add a VIN Model that only uses 4 chars to determine decode model - you need to update the FirstRead.XSL to add that new letter - to prevent invalid decodes occurring.-->
+<VINDecode xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="VINDecode.xsd">
+	<!--********************************************-->
+	<!--****************** Models ******************-->
+	<!--********************************************-->
+	<Models>
+    <!--All Jags except X150, X152, X250, X351, X760, X400-->
+    <VIN DecodeModel="1">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+	  <Test CharPos="10" Operator="NOT_EQUAL" CharValue="G"/>		  
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="B"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="C"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="D"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="E"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="J"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="K"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="P"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="R"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="S"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="T"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="U"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="V"/>
+      <Test CharPos="12" Operator="NOT_EQUAL" CharValue="W"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="Y"/>
+    </VIN>
+
+    <!--X150-->
+    <VIN DecodeModel="2">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="B"/>
+    </VIN>
+
+    <!--X152-->
+    <VIN DecodeModel="3">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="K"/>
+    </VIN>
+	
+	 <VIN DecodeModel="3">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+	  <Test CharPos="12" Operator="EQUAL" CharValue="P"/>
+    </VIN>
+
+    <!--X250-->
+    <VIN DecodeModel="4">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="R"/>
+    </VIN>
+
+    <VIN DecodeModel="4">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="S"/>
+    </VIN>
+
+	<VIN DecodeModel="4">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="T"/>
+    </VIN>
+	
+	<VIN DecodeModel="4">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="U"/>
+    </VIN>	
+
+    <!--X351-->
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,14" Operator="EQUAL" CharValue="J76"/>
+	</VIN>
+	
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,14" Operator="EQUAL" CharValue="J77"/>
+	</VIN>
+	
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,14" Operator="EQUAL" CharValue="J78"/>
+	</VIN>
+	
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,14" Operator="EQUAL" CharValue="J79"/>
+	</VIN>
+	
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J8"/>
+	</VIN>
+	
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J9"/>
+	</VIN>
+	
+    <VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="V"/>
+    </VIN>
+
+    <VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="W"/>
+    </VIN>
+
+    <VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="Y"/>
+	</VIN>
+	
+	<VIN DecodeModel="5">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="X"/>
+	</VIN>
+
+    <!--X400-->
+    <VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="C"/>
+    </VIN>
+
+    <VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="D"/>
+    </VIN>
+
+	 <VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12" Operator="EQUAL" CharValue="E"/>
+    </VIN>
+
+    <VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J0"/>
+    </VIN>
+	
+	<VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J1"/>
+    </VIN>
+	
+	<VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J2"/>
+    </VIN>
+
+	<VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J3"/>
+    </VIN>	
+	
+	<VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J4"/>
+    </VIN>
+
+	<VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J5"/>
+    </VIN>	
+	
+	<VIN DecodeModel="6">
+      <Test CharPos="1,3" Operator="EQUAL" CharValue="SAJ"/>
+      <Test CharPos="12,13" Operator="EQUAL" CharValue="J6"/>
+    </VIN>
+	<!--****************************************-->
+	<!--***************** L316 *****************-->
+	<!--****************************************-->
+    <!--L316 NonNAS-->
+    <VIN DecodeModel="10">
+      <Test CharPos="1,5" Operator="EQUAL" CharValue="SALLD"/>
+    </VIN>
+    <!--L316 NAS-->
+    <VIN DecodeModel="11">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALD"/>
+    </VIN>
+    <!--L316 CKD-->
+    <VIN DecodeModel="44">
+		<Test CharPos="1,4" Operator="EQUAL" CharValue="93RL"/>
+    </VIN>
+	<!--****************************************-->
+	<!--***************** L319 *****************-->
+	<!--****************************************-->
+    <!--L319 EU and ROW-->
+    <VIN DecodeModel="12">
+      <Test CharPos="1,5" Operator="EQUAL" CharValue="SALLA"/>
+    </VIN>
+    <!--L319 USA and Canada-->
+    <VIN DecodeModel="13">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALA"/>
+    </VIN>
+    
+    <!--L320 EU and ROW-->
+    <VIN DecodeModel="14">
+      <Test CharPos="1,5" Operator="EQUAL" CharValue="SALLS"/>
+    </VIN>
+    <!--L320 USA and Canada-->
+    <VIN DecodeModel="15">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALS"/>
+    </VIN>
+	<!--****************************************-->
+	<!--***************** L322 *****************-->
+	<!--****************************************-->
+    <!--L322 EU and ROW-->
+    <VIN DecodeModel="16">
+      <Test CharPos="1,5" Operator="EQUAL" CharValue="SALLM"/>
+    </VIN>
+    <!--L322 USA Canada Mexico China Korea-->
+    <VIN DecodeModel="17">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALM"/>
+    </VIN>
+	<!--****************************************-->
+	<!--***************** L314 *****************-->
+	<!--****************************************-->
+    <!--L314 NonNAS-->
+    <VIN DecodeModel="18">
+      <Test CharPos="1,5" Operator="EQUAL" CharValue="SALLN"/>
+    </VIN>
+    <!--L314 NAS, Mexico, China-->
+    <VIN DecodeModel="19">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALN"/>
+    </VIN>
+	<!--****************************************-->
+	<!--* 20 ************ L359 *****************-->
+	<!--****************************************-->
+    <!--L359 All Markets-->
+    <VIN DecodeModel="20">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALF"/>
+    </VIN>
+	<!--****************************************-->
+	<!--* 21 ************ L538 *****************-->
+	<!--****************************************-->	
+	<!--L538 12/13MY All Markets-->
+    <VIN DecodeModel="21">
+		<Test CharPos="1,4" Operator="EQUAL" CharValue="SALV"/>
+		<Test CharPos="10" Operator="EQUAL" CharValue="C"/>
+    </VIN>
+	<VIN DecodeModel="21">
+		<Test CharPos="1,4" Operator="EQUAL" CharValue="SALV"/>
+		<Test CharPos="10" Operator="EQUAL" CharValue="D"/>
+    </VIN>
+	<!--****************************************-->
+	<!--* 22 ************ L405 *****************-->
+	<!--****************************************-->	
+	<!--L405 All Markets-->
+    <VIN DecodeModel="22">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALG"/>
+    </VIN>
+	<!--****************************************-->
+	<!--* 23 ************ L494 *****************-->
+	<!--****************************************-->	
+	<!--L494 All Markets-->
+    <VIN DecodeModel="23">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALW"/>
+    </VIN>
+	<!--****************************************-->
+	<!--* 24 ******** L538 Multican ************-->
+	<!--****************************************-->	
+	<!--L538 14MY All Markets-->
+    <VIN DecodeModel="24">
+		<Test CharPos="1,4" Operator="EQUAL" CharValue="SALV"/>
+		<Test CharPos="10" Operator="NOT_EQUAL" CharValue="C"/>
+		<Test CharPos="10" Operator="NOT_EQUAL" CharValue="D"/>		
+    </VIN>
+	<!--<VIN DecodeModel="24">
+		<Test CharPos="1,4" Operator="EQUAL" CharValue="SALV"/>
+		<Test CharPos="10" Operator="EQUAL" CharValue="F"/>
+    </VIN>-->
+	<!--****************************************-->
+	<!--* 25 ************ L550 *****************-->
+	<!--****************************************-->			
+	<!--L550 All Markets-->
+    <VIN DecodeModel="25">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SALC"/>
+    </VIN>
+	<!--****************************************-->
+	<!--* 26 ************ X760 *****************-->
+	<!--****************************************-->			
+	<!--X760 All Markets-->
+    <VIN DecodeModel="26">
+      <Test CharPos="1,4" Operator="EQUAL" CharValue="SAJA"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="A"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="B"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="C"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="D"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="E"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="F"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="G"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="H"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="I"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="J"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="K"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="L"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="M"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="N"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="O"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="P"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="Q"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="R"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="T"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="U"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="V"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="W"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="X"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="Y"/>
+	  <Test CharPos="12" Operator="NOT_EQUAL" CharValue="Z"/>
+    </VIN>	
+    </Models>
+	<Decodes>
+		<!--****************************************************-->
+		<!--All Jags except X150,X152,X250,X351,X760,X400		-->
+		<!--****************************************************-->
+		<!--19-02-2008 Globvin-fori117.pdf Issue 34				-->
+		<!--09-May-2008	globvin.xls issue 37					-->
+		<!--****************************************************-->
+		<DecodeModel id="1">
+			<Version Ref="GlobalVIN.xls Issue:33 18-Oct-2007"></Version>
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Char="6,7">
+				<Value Value="01" Decode="X200"></Value>
+				<Value Value="02" Decode="X200"></Value>
+				<Value Value="03" Decode="X200"></Value>
+				<Value Value="11" Decode="X300"></Value>
+				<Value Value="12" Decode="X300"></Value>
+				<Value Value="13" Decode="X300"></Value>
+				<Value Value="14" Decode="X300"></Value>
+				<Value Value="15" Decode="X300"></Value>
+				<Value Value="16" Decode="X300"></Value>
+				<Value Value="17" Decode="X300"></Value>
+				<Value Value="21" Decode="X300"></Value>
+				<Value Value="22" Decode="X300"></Value>
+				<Value Value="23" Decode="X300"></Value>
+				<Value Value="24" Decode="X300"></Value>
+				<Value Value="25" Decode="X300"></Value>
+				<Value Value="41" Decode="X100"></Value>
+				<Value Value="42" Decode="X100"></Value>
+				<Value Value="71" Decode="X350"></Value>
+				<Value Value="72" Decode="X350"></Value>
+				<Value Value="73" Decode="X350"></Value>
+				<Value Value="74" Decode="X350"></Value>
+				<Value Value="75" Decode="X350"></Value>
+				<Value Value="76" Decode="X350"></Value>
+				<Value Value="77" Decode="X350"></Value>
+				<Value Value="78" Decode="X350"></Value>
+				<Value Value="79" Decode="X350"></Value>
+				<Value Value="80" Decode="X350"></Value>
+				<Value Value="81" Decode="X350"></Value>
+				<Value Value="82" Decode="X350"></Value>
+				<Value Value="83" Decode="X350"></Value>
+				<Value Value="84" Decode="X350"></Value>
+				<Value Value="85" Decode="X350"></Value>
+				<Value Value="86" Decode="X350"></Value>
+				<Value Value="87" Decode="X350"></Value>
+				<Value Value="88" Decode="X350"></Value>
+				<Value Value="89" Decode="X350"></Value>
+				<Value Value="90" Decode="X350"></Value>
+				<Value Value="91" Decode="X350"></Value>
+				<Value Value="92" Decode="X350"></Value>
+				<Value Value="93" Decode="X350"></Value>
+				<Value Value="94" Decode="X350"></Value>
+				<Value Value="95" Decode="X350"></Value>
+				<Value Value="7B" Decode="X350"></Value>
+				<Value Value="7C" Decode="X350"></Value>
+				<Value Value="7D" Decode="X350"></Value>
+				<Value Value="7K" Decode="X350"></Value>
+				<Value Value="8C" Decode="X350"></Value>
+				<Value Value="8D" Decode="X350"></Value>
+				<Value Value="8G" Decode="X350"></Value>
+				<Value Value="9C" Decode="X350"></Value>
+				<Value Value="9D" Decode="X350"></Value>
+				<Value Value="9E" Decode="X350"></Value>
+				<Value Value="9F" Decode="X350"></Value>
+			</Attribute>
+			<Attribute Name="ModelName" Char="6,7">
+				<Value Value="01" Decode="S-Type"></Value>
+				<Value Value="02" Decode="S-Type"></Value>
+				<Value Value="03" Decode="S-Type"></Value>
+				<!--X300-->
+				<Value Value="11" Decode="old XJ"></Value>
+				<Value Value="12" Decode="old XJ"></Value>
+				<Value Value="13" Decode="old XJ"></Value>
+				<Value Value="14" Decode="old XJ"></Value>
+				<Value Value="15" Decode="old XJ"></Value>
+				<!--X300 only-->
+				<Value Value="16" Decode="old XJ"></Value>
+				<Value Value="17" Decode="old XJ"></Value>
+				<!--X300-->
+				<Value Value="21" Decode="old XJ"></Value>
+				<Value Value="22" Decode="old XJ"></Value>
+				<Value Value="23" Decode="old XJ"></Value>
+				<Value Value="24" Decode="old XJ"></Value>
+				<Value Value="25" Decode="old XJ"></Value>
+				<!--X100-->
+				<Value Value="41" Decode="XK"></Value>
+				<Value Value="42" Decode="XK"></Value>
+				<!--X350-->
+				<Value Value="71" Decode="XJ"></Value>
+				<Value Value="72" Decode="XJ"></Value>
+				<Value Value="73" Decode="XJ"></Value>
+				<Value Value="74" Decode="XJ"></Value>
+				<Value Value="75" Decode="XJ"></Value>
+				<Value Value="76" Decode="XJ"></Value>
+				<Value Value="77" Decode="XJ"></Value>
+				<Value Value="78" Decode="XJ"></Value>
+				<Value Value="79" Decode="XJ"></Value>
+				<Value Value="80" Decode="XJ"></Value>
+				<Value Value="81" Decode="XJ"></Value>
+				<Value Value="82" Decode="XJ"></Value>
+				<Value Value="83" Decode="XJ"></Value>
+				<Value Value="84" Decode="XJ"></Value>
+				<Value Value="85" Decode="XJ"></Value>
+				<Value Value="86" Decode="XJ"></Value>
+				<Value Value="87" Decode="XJ"></Value>
+				<Value Value="88" Decode="XJ"></Value>
+				<Value Value="89" Decode="XJ"></Value>
+				<Value Value="90" Decode="XJ"></Value>
+				<Value Value="91" Decode="XJ"></Value>
+				<Value Value="92" Decode="XJ"></Value>
+				<Value Value="93" Decode="XJ"></Value>
+				<Value Value="94" Decode="XJ"></Value>
+				<Value Value="95" Decode="XJ"></Value>
+				<!--New page 4-->
+				<Value Value="1A" Decode="XJ"></Value>
+				<Value Value="1B" Decode="XJ"></Value>
+				<Value Value="1C" Decode="XJ"></Value>
+				<Value Value="1G" Decode="XJ"></Value>
+				<Value Value="1J" Decode="XJ"></Value>
+				<Value Value="1K" Decode="XJ"></Value>
+				<Value Value="2A" Decode="XJ"></Value>
+				<Value Value="2B" Decode="XJ"></Value>
+				<Value Value="2C" Decode="XJ"></Value>
+				<Value Value="2D" Decode="XJ"></Value>
+				<Value Value="2E" Decode="XJ"></Value>
+				<Value Value="2F" Decode="XJ"></Value>
+				<Value Value="2G" Decode="XJ"></Value>
+				<Value Value="2J" Decode="XJ"></Value>
+				<Value Value="7B" Decode="XJ"></Value>
+				<Value Value="7C" Decode="XJ"></Value>
+				<Value Value="7D" Decode="XJ"></Value>
+				<Value Value="7K" Decode="XJ"></Value>
+				<Value Value="8C" Decode="XJ"></Value>
+				<Value Value="8D" Decode="XJ"></Value>
+				<Value Value="8G" Decode="XJ"></Value>
+				<Value Value="9C" Decode="XJ"></Value>
+				<Value Value="9D" Decode="XJ"></Value>
+				<Value Value="9E" Decode="XJ"></Value>
+				<Value Value="9F" Decode="XJ"></Value>
+			</Attribute>
+			<Attribute Name="Market" Char="4">
+				<Value Value="A" Decode="ROW"></Value>
+				<Value Value="B" Decode="Canada"></Value>
+				<Value Value="C" Decode="ROW"></Value>
+				<Value Value="D" Decode="USA"></Value>
+				<Value Value="E" Decode="USA"></Value>
+				<Value Value="F" Decode="Canada"></Value>
+				<Value Value="G" Decode="Canada"></Value>
+				<Value Value="J" Decode="USA"></Value>
+				<Value Value="K" Decode="Japan"></Value>
+				<Value Value="L" Decode="Japan"></Value>
+				<Value Value="P" Decode="Mexico"></Value>
+				<Value Value="R" Decode="Mexico"></Value>
+				<Value Value="T" Decode="Mexico"></Value>
+				<Value Value="W" Decode="USA"></Value>
+				<Value Value="X" Decode="Canada"></Value>
+				<Value Value="Y" Decode="Mexico"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6,7">
+				<Value Value="01" Decode="4 door saloon"></Value>
+				<Value Value="02" Decode="4 door saloon"></Value>
+				<Value Value="03" Decode="4 door saloon"></Value>
+				<Value Value="04" Decode="4 door saloon"></Value>
+				<Value Value="05" Decode="4 door saloon"></Value>
+				<Value Value="06" Decode="4 door saloon"></Value>
+				<Value Value="07" Decode="4 door saloon"></Value>
+				<Value Value="08" Decode="4 door saloon"></Value>
+				<Value Value="11" Decode="X300(4 door saloon)"></Value>
+				<Value Value="12" Decode="X300(4 door saloon)"></Value>
+				<Value Value="13" Decode="X300(4 door saloon)"></Value>
+				<Value Value="14" Decode="X300(4 door saloon)"></Value>
+				<Value Value="15" Decode="X300(4 door saloon)"></Value>
+				<Value Value="16" Decode="X300(4 door saloon)"></Value>
+				<Value Value="17" Decode="X300(4 door saloon)"></Value>
+				<Value Value="18" Decode="X300(4 door saloon)"></Value>
+				<Value Value="19" Decode="X300(4 door saloon)"></Value>
+				<Value Value="21" Decode="X300(4 door saloon)"></Value>
+				<Value Value="22" Decode="X300(4 door saloon)"></Value>
+				<Value Value="23" Decode="X300(4 door saloon)"></Value>
+				<Value Value="24" Decode="X300(4 door saloon)"></Value>
+				<Value Value="25" Decode="X300(4 door saloon)"></Value>
+				<!--X100-->
+				<Value Value="41" Decode="2 door Coupe"></Value>
+				<Value Value="42" Decode="2 door Convertible"></Value>
+				<!--X350-->
+				<Value Value="71" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="72" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="73" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="74" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="75" Decode="4 door 4 seat saloon"></Value>
+				<Value Value="76" Decode="4 door 4 seat saloon"></Value>
+				<Value Value="77" Decode="4 door 4 seat saloon"></Value>
+				<Value Value="78" Decode="4 door 4 seat saloon"></Value>
+				<Value Value="79" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="80" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="81" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="82" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="83" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="84" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="85" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="86" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="87" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="88" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="89" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="90" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="91" Decode="Armoured LWB 4 door 4 seat saloon"></Value>
+				<Value Value="92" Decode="SWB 4 door 5 seat saloon - Portfolio"></Value>
+				<Value Value="93" Decode="SWB 4 door 4 st saloon - Portfolio"></Value>
+				<Value Value="94" Decode="LWB 4 door 5 st saloon - Portfolio"></Value>
+				<Value Value="95" Decode="LWB 4 door 4 st saloon - Portfolio"></Value>
+				<!--New page 4-->
+				<Value Value="0F" Decode="4 door saloon"></Value>
+				<Value Value="0G" Decode="4 door saloon"></Value>
+				<Value Value="0J" Decode="4 door saloon"></Value>
+				<Value Value="1A" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1B" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="1C" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="1G" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1J" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="2A" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2B" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="2C" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2D" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="2E" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2F" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="2G" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="2J" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="4D" Decode="2 door Coupe"></Value>
+				<Value Value="4E" Decode="2 door Convertible"></Value>
+				<Value Value="4F" Decode="2 door Coupe"></Value>
+				<Value Value="4G" Decode="2 door Convertible"></Value>
+				<Value Value="7B" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="7C" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="7D" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="7K" Decode="4 door 5 seat saloon"></Value>
+				<Value Value="8C" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="8D" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="8G" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="9C" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="9D" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="9E" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="9F" Decode="LWB 4 door 4 seat saloon"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6,7">
+				<!--X200-->
+				<Value Value="01" Decode="High series"></Value>
+				<Value Value="02" Decode="Entry series"></Value>
+				<Value Value="03" Decode="Sport series"></Value>
+				<!--X250-->
+				<Value Value="04" Decode="Entry series"></Value>
+				<Value Value="05" Decode="Luxury series"></Value>
+				<Value Value="06" Decode="Premium Luxury series"></Value>
+				<Value Value="07" Decode="Portfolio series/SV8"></Value>
+				<Value Value="08" Decode="R series"></Value>
+				<!--X350-->
+				<Value Value="71" Decode="XJ Executive"></Value>
+				<Value Value="72" Decode="SE"></Value>
+				<Value Value="73" Decode="XJR Sport"></Value>
+				<Value Value="74" Decode="Daimler VDP SV8"></Value>
+				<Value Value="75" Decode="XJ Executive"></Value>
+				<Value Value="76" Decode="SE"></Value>
+				<Value Value="77" Decode="XJR Sport"></Value>
+				<Value Value="78" Decode="Daimler VDP SV8"></Value>
+				<Value Value="79" Decode="XJ Executive"></Value>
+				<Value Value="80" Decode="SE"></Value>
+				<Value Value="81" Decode="XJR Sport"></Value>
+				<Value Value="82" Decode="Daimler VDP SV8"></Value>
+				<Value Value="83" Decode="XJ Executive"></Value>
+				<Value Value="84" Decode="SE"></Value>
+				<Value Value="85" Decode="XJR Sport"></Value>
+				<Value Value="86" Decode="Daimler VDP SV8"></Value>
+				<Value Value="87" Decode="Sovereign"></Value>
+				<Value Value="88" Decode="Sovereign"></Value>
+				<Value Value="89" Decode="Sovereign"></Value>
+				<Value Value="90" Decode="Sovereign"></Value>
+				<Value Value="91" Decode="Sovereign SE"></Value>
+				<Value Value="92" Decode="Portfolio"></Value>
+				<Value Value="93" Decode="Portfolio"></Value>
+				<Value Value="94" Decode="Portfolio"></Value>
+				<Value Value="95" Decode="Portfolio"></Value>
+				<!--New page 4-->
+				<Value Value="0F" Decode="Luxury"></Value>
+				<Value Value="0G" Decode="Premium Luxury"></Value>
+				<Value Value="0H" Decode="Portfolio"></Value>
+				<Value Value="0J" Decode="R"></Value>
+				<Value Value="1A" Decode="Luxury"></Value>
+				<Value Value="1B" Decode="Luxury"></Value>
+				<Value Value="1C" Decode="Premium Luxury"></Value>
+				<Value Value="1E" Decode="XJR"></Value>
+				<Value Value="1G" Decode="Portfolio"></Value>
+				<Value Value="1J" Decode="Supersport"></Value>
+				<Value Value="2A" Decode="Luxury"></Value>
+				<Value Value="2B" Decode="Luxury"></Value>
+				<Value Value="2C" Decode="Premium Luxury"></Value>
+				<Value Value="2D" Decode="Premium Luxury"></Value>
+				<Value Value="2E" Decode="SV8"></Value>
+				<Value Value="2F" Decode="SV8"></Value>
+				<Value Value="2G" Decode="Portfolio"></Value>
+				<Value Value="2J" Decode="Supersport"></Value>
+				<Value Value="4D" Decode="-"></Value>
+				<Value Value="4E" Decode="-"></Value>
+				<Value Value="4F" Decode="Portfolio(LE)"></Value>
+				<Value Value="4G" Decode="Portfolio(LE)"></Value>
+				<Value Value="7B" Decode="Executive"></Value>
+				<Value Value="7C" Decode="SE"></Value>
+				<Value Value="7D" Decode="Sport"></Value>
+				<Value Value="7K" Decode="XJ / Executive"></Value>
+				<Value Value="8C" Decode="Daim/VDP/SV8"></Value>
+				<Value Value="8D" Decode="Executive"></Value>
+				<Value Value="8G" Decode="Daim/VDP/SV8"></Value>
+				<Value Value="9C" Decode="Portfolio"></Value>
+				<Value Value="9D" Decode="Portfolio"></Value>
+				<Value Value="9E" Decode="Portfolio"></Value>
+				<Value Value="9F" Decode="Portfolio"></Value>
+			</Attribute>
+			<Attribute Name="Emission" Char="8">
+				<Value Value="A" Decode="ECS 1"></Value>
+				<Value Value="B" Decode="ECS 2"></Value>
+				<Value Value="C" Decode="ECS 3"></Value>
+				<Value Value="D" Decode="ECS 4"></Value>
+				<Value Value="E" Decode="ECS 5"></Value>
+				<Value Value="F" Decode="ECS 6"></Value>
+				<Value Value="G" Decode="ECS 7"></Value>
+				<Value Value="H" Decode="ECS 8"></Value>
+				<Value Value="J" Decode="ECS 9"></Value>
+				<Value Value="K" Decode="ECS 10"></Value>
+				<Value Value="L" Decode="ECS 11"></Value>
+				<Value Value="M" Decode="ECS 12"></Value>
+				<Value Value="N" Decode="ECS 13"></Value>
+				<Value Value="P" Decode="ECS 14"></Value>
+				<Value Value="R" Decode="ECS 15"></Value>
+				<Value Value="S" Decode="ECS 16"></Value>
+				<Value Value="T" Decode="ECS 17"></Value>
+				<Value Value="U" Decode="ECS 18"></Value>
+				<Value Value="V" Decode="ECS 19"></Value>
+				<Value Value="W" Decode="ECS 20"></Value>
+				<Value Value="X" Decode="ECS 21"></Value>
+				<Value Value="Y" Decode="ECS 22"></Value>
+				<Value Value="1" Decode="ECS 23"></Value>
+				<Value Value="2" Decode="ECS 24"></Value>
+				<Value Value="3" Decode="ECS 25"></Value>
+				<Value Value="4" Decode="ECS 26"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="W" Decode="1998"></Value>			
+				<Value Value="X" Decode="1999"></Value>
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+				<Value Value="H" Decode="2017"></Value>
+				<Value Value="J" Decode="2018"></Value>
+				<Value Value="K" Decode="2019"></Value>
+				<Value Value="L" Decode="2020"></Value>
+				<Value Value="M" Decode="2021"></Value>
+				<Value Value="N" Decode="2022"></Value>
+				<Value Value="P" Decode="2023"></Value>
+				<Value Value="R" Decode="2024"></Value>
+				<Value Value="S" Decode="2025"></Value>
+				<Value Value="T" Decode="2026"></Value>
+				<Value Value="V" Decode="2027"></Value>
+
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="1" Decode="CB"></Value>
+				<Value Value="2" Decode="CB"></Value>
+				<Value Value="3" Decode="BL"></Value>
+				<Value Value="4" Decode="CB"></Value>
+				<Value Value="5" Decode="CB"></Value>
+				<Value Value="6" Decode="Hw"></Value>
+				<Value Value="7" Decode="CB"></Value>
+				<Value Value="8" Decode="CB"></Value>
+				<Value Value="9" Decode="CB"></Value>
+				<Value Value="A" Decode="BL"></Value>
+				<Value Value="B" Decode="BL"></Value>
+				<Value Value="C" Decode="BL"></Value>
+				<Value Value="F" Decode="CB"></Value>
+				<Value Value="G" Decode="CB"></Value>
+				<Value Value="H" Decode="CB"></Value>
+				<Value Value="K" Decode="CB"></Value>
+				<Value Value="J" Decode="CB"></Value>
+				<Value Value="L" Decode="CB"></Value>
+				<Value Value="M" Decode="CB"></Value>
+				<Value Value="N" Decode="CB"></Value>
+				<Value Value="P" Decode="CB"></Value>
+				<Value Value="R" Decode="BL or CB"></Value>
+				<Value Value="S" Decode="BL or CB"></Value>
+				<Value Value="T" Decode="BL or CB"></Value>
+				<Value Value="V" Decode="BL or CB"></Value>
+				<Value Value="W" Decode="Hw"></Value>
+				<Value Value="X" Decode="Hw"></Value>
+				<Value Value="Y" Decode="Hw"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="5">
+				<Value Value="A" Decode="LHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="RHD"></Value>
+				<Value Value="E" Decode="LHD"></Value>
+				<Value Value="F" Decode="LHD"></Value>
+				<Value Value="G" Decode="RHD"></Value>
+				<Value Value="H" Decode="RHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="5">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Manual"></Value>
+				<Value Value="C" Decode="Automatic"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+				<Value Value="E" Decode="Automatic"></Value>
+				<Value Value="F" Decode="Manual"></Value>
+				<Value Value="G" Decode="Automatic"></Value>
+				<Value Value="H" Decode="Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="11">
+				<Value Value="X" Decode="2.5L AJ-V6"></Value>
+				<Value Value="Y" Decode="X400(2.0L AJ-V6)"></Value>
+				<Value Value="1" Decode="4.2L SC AJ36"></Value>
+				<Value Value="2" Decode="4.2L AJ-34"></Value>
+				<Value Value="3" Decode="4.2L SC AJ34"></Value>
+				<Value Value="4" Decode="3.5L AJ40"></Value>
+				<Value Value="5" Decode="4.2L AJ40"></Value>
+				<Value Value="6" Decode="2.0L AJD-I4"></Value>
+				<Value Value="7" Decode="2.7L AJd-V6"></Value>
+				<Value Value="8" Decode="5.0L AJ-133 or AJ126 3.0L SC (P)"></Value>
+				<Value Value="9" Decode="4.2L SC AJ40"></Value>
+				<Value Value="A" Decode="3.2L AJ26"></Value>
+				<Value Value="B" Decode="4.0L AJ26"></Value>
+				<Value Value="C" Decode="4.0L AJ26"></Value>
+				<Value Value="D" Decode="4.0L SC AJ26"></Value>
+				<Value Value="E" Decode="4.0L SC AJ26"></Value>
+				<Value Value="F" Decode="3.0L AJ-V6"></Value>
+				<Value Value="G" Decode="4.0L AJ28"></Value>
+				<Value Value="H" Decode="4.2L AJ36"></Value>
+				<Value Value="J" Decode="X200(2.5L AJ-V6)"></Value>
+				<!--<Value Value="K" Decode="5.0L SC AJ-133"></Value>-->
+				<Value Value="K" Decode="3.0L V6d - low power"></Value>
+				<Value Value="L" Decode="4.0L AJ27"></Value>
+				<Value Value="M" Decode="4.0L s/c AJ27"></Value>
+				<Value Value="N" Decode="4.0L AJ27"></Value>
+				<Value Value="P" Decode="4.0L s/c AJ27"></Value>
+				<Value Value="R" Decode="3.5L AJ-33"></Value>
+				<Value Value="S" Decode="4.2L AJ-33"></Value>
+				<Value Value="T" Decode="4.2L SC AJ33"></Value>
+				<Value Value="V" Decode="3.0L AJ-V6"></Value>
+				<Value Value="W" Decode="3.0L AJ-V6"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- X150 - XK											-->
+		<!--****************************************************-->
+		<DecodeModel id="2">
+			<Version Ref="GlobalVIN.xls Issue:33 18-Oct-2007"></Version>
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Decode="X150"></Attribute>
+			<Attribute Name="ModelName" Decode="XK"></Attribute>
+			<Attribute Name="Market" Char="4">
+				<Value Value="A" Decode="ROW"></Value>
+				<Value Value="B" Decode="Canada"></Value>
+				<Value Value="C" Decode="ROW"></Value>
+				<Value Value="D" Decode="USA"></Value>
+				<Value Value="E" Decode="USA"></Value>
+				<Value Value="F" Decode="Canada"></Value>
+				<Value Value="G" Decode="Canada"></Value>
+				<Value Value="J" Decode="USA"></Value>
+				<Value Value="K" Decode="Japan"></Value>
+				<Value Value="L" Decode="Japan"></Value>
+				<Value Value="P" Decode="Mexico"></Value>
+				<Value Value="R" Decode="Mexico"></Value>
+				<Value Value="T" Decode="Mexico"></Value>
+				<Value Value="W" Decode="USA"></Value>
+				<Value Value="X" Decode="Canada"></Value>
+				<Value Value="Y" Decode="Mexico"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6,7">
+				<Value Value="43" Decode="2 door"></Value>
+				<Value Value="44" Decode="2 door"></Value>
+				<Value Value="45" Decode="2 door"></Value>
+				<Value Value="46" Decode="2 door"></Value>
+				<Value Value="47" Decode="2 door"></Value>
+				<Value Value="48" Decode="2 door"></Value>
+				<Value Value="49" Decode="2 door"></Value>
+				<Value Value="50" Decode="2 door"></Value>
+				<Value Value="4D" Decode="2 door"></Value>
+				<Value Value="4E" Decode="2 door"></Value>
+				<Value Value="4F" Decode="2 door"></Value>
+				<Value Value="4G" Decode="2 door"></Value>
+				<Value Value="4H" Decode="2 door"></Value>
+				<Value Value="4J" Decode="2 door"></Value>
+				<Value Value="4K" Decode="2 door"></Value>
+				<Value Value="4L" Decode="2 door"></Value>
+				</Attribute>
+			<Attribute Name="Trim" Char="6,7">
+				<Value Value="43" Decode="Coupe"></Value>
+				<Value Value="44" Decode="Convertible"></Value>
+				<Value Value="45" Decode="Coupe Portfolio / XKR Spd Pack"></Value>
+				<Value Value="46" Decode="Convertible Portfolio / XKR Spd Pack"></Value>
+				<Value Value="47" Decode="Coupe XKR 75LE / XKR-S"></Value>
+				<Value Value="48" Decode="Convertible XKR 75LE / XKR-S"></Value>
+				<Value Value="49" Decode="Coupe / XK Spd Pack"></Value>
+				<Value Value="50" Decode="Convertible / XK Spd Pack"></Value>
+				<Value Value="4D" Decode="Coupe"></Value>
+				<Value Value="4E" Decode="Convertible"></Value>
+				<Value Value="4F" Decode="Coupe Portfolio / XKR Spd Pack"></Value>
+				<Value Value="4G" Decode="Convertible Portfolio / XKR Spd Pack"></Value>
+				<Value Value="4H" Decode="Coupe XKR 75LE / XKR-S"></Value>
+				<Value Value="4J" Decode="Convertible XKR 75LE / XKR-S"></Value>
+				<Value Value="4K" Decode="Coupe / XK Spd Pack"></Value>
+				<Value Value="4L" Decode="Convertible / XK Spd Pack"></Value>
+				</Attribute>
+			<Attribute Name="Emission" Char="8">
+				<Value Value="A" Decode="ECS 1"></Value>
+				<Value Value="B" Decode="ECS 2"></Value>
+				<Value Value="C" Decode="ECS 3"></Value>
+				<Value Value="D" Decode="ECS 4"></Value>
+				<Value Value="E" Decode="ECS 5"></Value>
+				<Value Value="F" Decode="ECS 6"></Value>
+				<Value Value="G" Decode="ECS 7"></Value>
+				<Value Value="H" Decode="ECS 8"></Value>
+				<Value Value="J" Decode="ECS 9"></Value>
+				<Value Value="K" Decode="ECS 10"></Value>
+				<Value Value="L" Decode="ECS 11"></Value>
+				<Value Value="M" Decode="ECS 12"></Value>
+				<Value Value="N" Decode="ECS 13"></Value>
+				<Value Value="P" Decode="ECS 14"></Value>
+				<Value Value="R" Decode="ECS 15"></Value>
+				<Value Value="S" Decode="ECS 16"></Value>
+				<Value Value="T" Decode="ECS 17"></Value>
+				<Value Value="U" Decode="ECS 18"></Value>
+				<Value Value="V" Decode="ECS 19"></Value>
+				<Value Value="W" Decode="ECS 20"></Value>
+				<Value Value="X" Decode="ECS 21"></Value>
+				<Value Value="Y" Decode="ECS 22"></Value>
+				<Value Value="1" Decode="ECS 23"></Value>
+				<Value Value="2" Decode="ECS 24"></Value>
+				<Value Value="3" Decode="ECS 25"></Value>
+				<Value Value="4" Decode="ECS 26"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="X" Decode="1999"></Value>
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+				<Value Value="H" Decode="2017"></Value>
+				<Value Value="J" Decode="2018"></Value>
+				<Value Value="K" Decode="2019"></Value>
+				<Value Value="L" Decode="2020"></Value>
+				<Value Value="M" Decode="2021"></Value>
+				<Value Value="N" Decode="2022"></Value>
+				<Value Value="P" Decode="2023"></Value>
+				<Value Value="R" Decode="2024"></Value>
+				<Value Value="S" Decode="2025"></Value>
+				<Value Value="T" Decode="2026"></Value>
+				<Value Value="V" Decode="2027"></Value>
+				<Value Value="W" Decode="1998"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="1" Decode="CB"></Value>
+				<Value Value="2" Decode="CB"></Value>
+				<Value Value="3" Decode="BL"></Value>
+				<Value Value="4" Decode="CB"></Value>
+				<Value Value="5" Decode="CB"></Value>
+				<Value Value="6" Decode="Hw"></Value>
+				<Value Value="7" Decode="CB"></Value>
+				<Value Value="8" Decode="CB"></Value>
+				<Value Value="9" Decode="CB"></Value>
+				<Value Value="A" Decode="BL"></Value>
+				<Value Value="B" Decode="X400(Hw) or X300(BL)"></Value>
+				<Value Value="C" Decode="BL"></Value>
+				<Value Value="F" Decode="CB"></Value>
+				<Value Value="G" Decode="CB"></Value>
+				<Value Value="H" Decode="CB"></Value>
+				<Value Value="K" Decode="CB"></Value>
+				<Value Value="J" Decode="CB"></Value>
+				<Value Value="L" Decode="CB"></Value>
+				<Value Value="M" Decode="CB"></Value>
+				<Value Value="N" Decode="CB"></Value>
+				<Value Value="P" Decode="CB"></Value>
+				<Value Value="R" Decode="BL or CB"></Value>
+				<Value Value="S" Decode="BL or CB"></Value>
+				<Value Value="T" Decode="BL or CB"></Value>
+				<Value Value="V" Decode="BL or CB"></Value>
+				<Value Value="W" Decode="Hw"></Value>
+				<Value Value="X" Decode="Hw"></Value>
+				<Value Value="Y" Decode="Hw"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="5">
+				<Value Value="A" Decode="LHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="RHD"></Value>
+				<Value Value="E" Decode="LHD"></Value>
+				<Value Value="F" Decode="LHD"></Value>
+				<Value Value="G" Decode="RHD"></Value>
+				<Value Value="H" Decode="RHD"></Value>
+				<Value Value="J" Decode="LHD AWD"></Value>
+				<Value Value="L" Decode="RHD AWD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="5">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Manual"></Value>
+				<Value Value="C" Decode="Automatic"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+				<Value Value="E" Decode="Automatic"></Value>
+				<Value Value="F" Decode="Manual"></Value>
+				<Value Value="G" Decode="Automatic"></Value>
+				<Value Value="H" Decode="Manual"></Value>
+				<Value Value="J" Decode="Automatic"></Value>
+				<Value Value="L" Decode="Automatic"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="11">
+				<Value Value="X" Decode="2.5L AJ-V6"></Value>
+				<Value Value="Y" Decode="5.0L SC AJ-133"></Value>
+				<Value Value="1" Decode="4.2L SC AJ36"></Value>
+				<Value Value="2" Decode="4.2L AJ-34"></Value>
+				<Value Value="3" Decode="4.2L SC AJ34"></Value>
+				<Value Value="4" Decode="3.5L AJ40"></Value>
+				<Value Value="5" Decode="4.2L AJ40"></Value>
+				<Value Value="6" Decode="2.0L AJD-I4"></Value>
+				<Value Value="7" Decode="2.7L AJd-V6"></Value>
+				<Value Value="8" Decode="5.0L AJ-133 or AJ126 3.0L SC (P)"></Value>
+				<Value Value="9" Decode="4.2L SC AJ40"></Value>
+				<Value Value="A" Decode="3.2L AJ26"></Value>
+				<Value Value="B" Decode="X400(2.2L AJD-I4) or X300(4.0L AJ26)"></Value>
+				<Value Value="C" Decode="4.0L AJ26"></Value>
+				<Value Value="D" Decode="4.0L SC AJ26"></Value>
+				<Value Value="E" Decode="4.0L SC AJ26"></Value>
+				<Value Value="F" Decode="3.0L AJ-V6"></Value>
+				<Value Value="G" Decode="4.0L AJ28"></Value>
+				<Value Value="H" Decode="4.2L AJ36"></Value>
+				<Value Value="J" Decode="X200(2.5L AJ-V6) or X351(5.0L SC AJ-133)"></Value>
+				<!--<Value Value="K" Decode="5.0L SC AJ-133"></Value>-->
+				<Value Value="K" Decode="3.0L V6d - low power"></Value>
+				<Value Value="L" Decode="5.0L AJ-133 "></Value>
+				<Value Value="M" Decode="5.0L SC AJ133"></Value>
+				<Value Value="N" Decode="3.0L AJTD V6"></Value>
+				<Value Value="P" Decode="2.2L I4d"></Value>
+				<Value Value="R" Decode="3.5L AJ-33"></Value>
+				<Value Value="S" Decode="4.2L AJ-33"></Value>
+				<Value Value="T" Decode="4.2L SC AJ33"></Value>
+				<Value Value="V" Decode="3.0L AJ-V6"></Value>
+				<Value Value="W" Decode="3.0L AJ-V6"></Value>
+			</Attribute>
+		</DecodeModel>
+        <!--****************************************************-->
+		<!-- X152												-->
+		<!--****************************************************-->
+        <DecodeModel id="3">
+			<Version Ref="GlobalVIN.xls Issue:48 09-May-2012"></Version>
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Decode="X152"></Attribute>
+			<Attribute Name="ModelName" Decode="F-Type"></Attribute>
+			<Attribute Name="Market" Char="4">
+				<Value Value="A" Decode="ROW"></Value>
+				<Value Value="B" Decode="Canada"></Value>
+				<Value Value="C" Decode="ROW"></Value>
+				<Value Value="D" Decode="USA"></Value>
+				<Value Value="E" Decode="USA"></Value>
+				<Value Value="F" Decode="Canada"></Value>
+				<Value Value="G" Decode="Canada"></Value>
+				<Value Value="J" Decode="USA"></Value>
+				<Value Value="K" Decode="Japan"></Value>
+				<Value Value="L" Decode="Japan"></Value>
+				<Value Value="P" Decode="Mexico"></Value>
+				<Value Value="R" Decode="Mexico"></Value>
+				<Value Value="T" Decode="Mexico"></Value>
+				<Value Value="W" Decode="USA"></Value>
+				<Value Value="X" Decode="Canada"></Value>
+				<Value Value="Y" Decode="Mexico"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6,7">
+				<Value Value="60" Decode="2 door"></Value>
+				<Value Value="61" Decode="2 door"></Value>
+				<Value Value="62" Decode="2 door"></Value>
+				<Value Value="63" Decode="2 door"></Value>
+				<Value Value="64" Decode="2 door"></Value>
+				<Value Value="65" Decode="2 door"></Value>
+				<Value Value="66" Decode="2 door"></Value>
+				<Value Value="67" Decode="2 door"></Value>
+				<Value Value="6A" Decode="2 door"></Value>
+				<Value Value="6B" Decode="2 door"></Value>
+				<Value Value="6C" Decode="2 door"></Value>
+				<Value Value="6D" Decode="2 door"></Value>
+				<Value Value="6E" Decode="2 door"></Value>
+				<Value Value="6F" Decode="2 door"></Value>
+				<Value Value="6G" Decode="2 door"></Value>
+				<Value Value="6H" Decode="2 door"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6,7">
+				<Value Value="60" Decode="Coupe ST1"></Value>
+				<Value Value="61" Decode="Coupe ST2"></Value>
+				<Value Value="62" Decode="Coupe ST3"></Value>
+				<Value Value="63" Decode="Coupe ST4"></Value>
+				<Value Value="64" Decode="Conv ST1"></Value>
+				<Value Value="65" Decode="Conv ST2"></Value>
+				<Value Value="66" Decode="Conv ST3"></Value>
+				<Value Value="67" Decode="Conv ST4"></Value>
+				<Value Value="6A" Decode="Coupe ST1"></Value>
+				<Value Value="6B" Decode="Coupe ST2"></Value>
+				<Value Value="6C" Decode="Coupe ST3"></Value>
+				<Value Value="6D" Decode="Coupe ST4"></Value>
+				<Value Value="6E" Decode="Conv ST1"></Value>
+				<Value Value="6F" Decode="Conv ST2"></Value>
+				<Value Value="6G" Decode="Conv ST3"></Value>
+				<Value Value="6H" Decode="Conv ST4"></Value>
+				</Attribute>
+			<Attribute Name="Emission" Char="8">
+				<Value Value="A" Decode="ECS 1"></Value>
+				<Value Value="B" Decode="ECS 2"></Value>
+				<Value Value="C" Decode="ECS 3"></Value>
+				<Value Value="D" Decode="ECS 4"></Value>
+				<Value Value="E" Decode="ECS 5"></Value>
+				<Value Value="F" Decode="ECS 6"></Value>
+				<Value Value="G" Decode="ECS 7"></Value>
+				<Value Value="H" Decode="ECS 8"></Value>
+				<Value Value="J" Decode="ECS 9"></Value>
+				<Value Value="K" Decode="ECS 10"></Value>
+				<Value Value="L" Decode="ECS 11"></Value>
+				<Value Value="M" Decode="ECS 12"></Value>
+				<Value Value="N" Decode="ECS 13"></Value>
+				<Value Value="P" Decode="ECS 14"></Value>
+				<Value Value="R" Decode="ECS 15"></Value>
+				<Value Value="S" Decode="ECS 16"></Value>
+				<Value Value="T" Decode="ECS 17"></Value>
+				<Value Value="U" Decode="ECS 18"></Value>
+				<Value Value="V" Decode="ECS 19"></Value>
+				<Value Value="W" Decode="ECS 20"></Value>
+				<Value Value="X" Decode="ECS 21"></Value>
+				<Value Value="Y" Decode="ECS 22"></Value>
+				<Value Value="1" Decode="ECS 23"></Value>
+				<Value Value="2" Decode="ECS 24"></Value>
+				<Value Value="3" Decode="ECS 25"></Value>
+				<Value Value="4" Decode="ECS 26"></Value>
+				<Value Value="5" Decode="ECS 27"></Value>
+				<Value Value="6" Decode="ECS 28"></Value>
+				<Value Value="7" Decode="ECS 29"></Value>
+				<Value Value="8" Decode="ECS 30"></Value>
+				<Value Value="9" Decode="ECS 31"></Value>			
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+				<Value Value="H" Decode="2017"></Value>
+				<Value Value="J" Decode="2018"></Value>
+				<Value Value="K" Decode="2019"></Value>
+				<Value Value="L" Decode="2020"></Value>
+				<Value Value="M" Decode="2021"></Value>
+				<Value Value="N" Decode="2022"></Value>
+				<Value Value="P" Decode="2023"></Value>
+				<Value Value="R" Decode="2024"></Value>
+				<Value Value="S" Decode="2025"></Value>
+				<Value Value="T" Decode="2026"></Value>
+				<Value Value="V" Decode="2027"></Value>
+				<Value Value="W" Decode="1998"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="M" Decode="CB"></Value>
+				<Value Value="P" Decode="CB"></Value>
+				<Value Value="8" Decode="CB"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="5">
+				<Value Value="A" Decode="LHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="RHD"></Value>
+				<Value Value="E" Decode="LHD"></Value>
+				<Value Value="F" Decode="LHD"></Value>
+				<Value Value="G" Decode="RHD"></Value>
+				<Value Value="H" Decode="RHD"></Value>
+				<Value Value="J" Decode="LHD AWD"></Value>
+				<Value Value="L" Decode="RHD AWD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="5">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Manual"></Value>
+				<Value Value="C" Decode="Automatic"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+				<Value Value="E" Decode="Automatic"></Value>
+				<Value Value="F" Decode="Manual"></Value>
+				<Value Value="G" Decode="Automatic"></Value>
+				<Value Value="H" Decode="Manual"></Value>
+				<Value Value="J" Decode="Automatic"></Value>
+				<Value Value="L" Decode="Automatic"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="11">
+				<Value Value="M" Decode="5.0L SC AJ133"></Value>
+				<Value Value="P" Decode="2.0L GTDi (P)"></Value>
+				<Value Value="8" Decode="3.0L AJ126 SC (P)"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- X250 - XF											-->
+		<!--****************************************************-->
+        <DecodeModel id="4">
+			<Version Ref="GlobalVIN.xls Issue:33 18-Oct-2007"></Version>
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Decode="X250"></Attribute>
+			<Attribute Name="ModelName" Decode="XF"></Attribute>
+			<Attribute Name="Market" Char="4">
+				<Value Value="A" Decode="ROW"></Value>
+				<Value Value="B" Decode="Canada"></Value>
+				<Value Value="C" Decode="ROW"></Value>
+				<Value Value="D" Decode="USA"></Value>
+				<Value Value="E" Decode="USA"></Value>
+				<Value Value="F" Decode="Canada"></Value>
+				<Value Value="G" Decode="Canada"></Value>
+				<Value Value="J" Decode="USA"></Value>
+				<Value Value="K" Decode="Japan"></Value>
+				<Value Value="L" Decode="Japan"></Value>
+				<Value Value="P" Decode="Mexico"></Value>
+				<Value Value="R" Decode="Mexico"></Value>
+				<Value Value="T" Decode="Mexico"></Value>
+				<Value Value="W" Decode="USA"></Value>
+				<Value Value="X" Decode="Canada"></Value>
+				<Value Value="Y" Decode="Mexico"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6,7">
+				<Value Value="00" Decode="4 door Sports Brake"></Value>
+				<Value Value="01" Decode="4 door Sports Brake"></Value>
+				<Value Value="02" Decode="4 door Sports Brake"></Value>
+				<Value Value="03" Decode="4 door Sports Brake"></Value>
+				<Value Value="04" Decode="4 door saloon"></Value>
+				<Value Value="05" Decode="4 door saloon"></Value>
+				<Value Value="06" Decode="4 door saloon"></Value>
+				<Value Value="07" Decode="4 door saloon"></Value>
+				<Value Value="08" Decode="4 door saloon"></Value>
+				<Value Value="09" Decode="4 door saloon"></Value>
+				<Value Value="0A" Decode="4 door Sports Brake"></Value>
+				<Value Value="0B" Decode="4 door Sports Brake"></Value>
+				<Value Value="0C" Decode="4 door Sports Brake"></Value>
+				<Value Value="0D" Decode="4 door Sports Brake"></Value>
+				<Value Value="0E" Decode="4 door saloon"></Value>
+				<Value Value="0F" Decode="4 door saloon"></Value>
+				<Value Value="0G" Decode="4 door saloon"></Value>
+				<Value Value="0H" Decode="4 door saloon"></Value>
+				<Value Value="0J" Decode="4 door saloon"></Value>
+				<Value Value="0K" Decode="4 door saloon"></Value>
+				<Value Value="81" Decode="4 door Sports Brake"></Value>
+				<Value Value="82" Decode="4 door Sports Brake"></Value>
+				<Value Value="83" Decode="4 door Sports Brake"></Value>
+				<Value Value="84" Decode="4 door Sports Brake"></Value>
+				<Value Value="85" Decode="4 door saloon"></Value>
+				<Value Value="86" Decode="4 door saloon"></Value>
+				<Value Value="87" Decode="4 door saloon"></Value>
+				<Value Value="88" Decode="4 door saloon"></Value>
+				<Value Value="89" Decode="4 door saloon"></Value>
+				<Value Value="8E" Decode="4 door saloon"></Value>
+				<Value Value="8F" Decode="4 door saloon"></Value>
+				<Value Value="8G" Decode="4 door saloon"></Value>
+				<Value Value="8H" Decode="4 door saloon"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6,7">
+				<Value Value="00" Decode="Entry series"></Value>
+				<Value Value="01" Decode="Luxury series"></Value>
+				<Value Value="02" Decode="Premium Luxury series"></Value>
+				<Value Value="03" Decode="Portfolio series/SV8"></Value>
+				<Value Value="04" Decode="Entry series"></Value>
+				<Value Value="05" Decode="Luxury series"></Value>
+				<Value Value="06" Decode="Premium Luxury series"></Value>
+				<Value Value="07" Decode="Portfolio series/SV8"></Value>
+				<Value Value="08" Decode="R series"></Value>
+				<Value Value="09" Decode="XFR LE / XFR-S"></Value>
+				<Value Value="0A" Decode="Entry series"></Value>
+				<Value Value="0B" Decode="Luxury series"></Value>
+				<Value Value="0C" Decode="Premium Luxury series"></Value>
+				<Value Value="0D" Decode="Portfolio series/SV8"></Value>
+				<Value Value="0E" Decode="Entry series"></Value>
+				<Value Value="0F" Decode="Luxury series"></Value>
+				<Value Value="0G" Decode="Premium Luxury series"></Value>
+				<Value Value="0H" Decode="Portfolio series/SV8"></Value>
+				<Value Value="0J" Decode="R series"></Value>
+				<Value Value="0K" Decode="XFR LE / XFR-S"></Value>
+				<Value Value="81" Decode="Luxury + Spd Pack"></Value>
+				<Value Value="82" Decode="Premium Luxury + Spd Pack"></Value>
+				<Value Value="83" Decode="Portfolio + Spd Pack"></Value>
+				<Value Value="84" Decode="XFR + Spd Pack"></Value>
+				<Value Value="85" Decode="Luxury + Spd Pack"></Value>
+				<Value Value="86" Decode="Premium Luxury + Spd Pack"></Value>
+				<Value Value="87" Decode="Portfolio + Spd Pack"></Value>
+				<Value Value="88" Decode="XFR + Spd Pack"></Value>
+				<Value Value="89" Decode="Sportsbrake XFR-S"></Value>
+				<Value Value="8E" Decode="Luxury + Spd Pack"></Value>
+				<Value Value="8F" Decode="Premium Luxury + Spd Pack"></Value>
+				<Value Value="8G" Decode="Portfolio + Spd Pack"></Value>
+				<Value Value="8H" Decode="XFR + Spd Pack"></Value>
+			</Attribute>
+			<Attribute Name="Emission" Char="8">
+				<Value Value="A" Decode="ECS 1"></Value>
+				<Value Value="B" Decode="ECS 2"></Value>
+				<Value Value="C" Decode="ECS 3"></Value>
+				<Value Value="D" Decode="ECS 4"></Value>
+				<Value Value="E" Decode="ECS 5"></Value>
+				<Value Value="F" Decode="ECS 6"></Value>
+				<Value Value="G" Decode="ECS 7"></Value>
+				<Value Value="H" Decode="ECS 8"></Value>
+				<Value Value="J" Decode="ECS 9"></Value>
+				<Value Value="K" Decode="ECS 10"></Value>
+				<Value Value="L" Decode="ECS 11"></Value>
+				<Value Value="M" Decode="ECS 12"></Value>
+				<Value Value="N" Decode="ECS 13"></Value>
+				<Value Value="P" Decode="ECS 14"></Value>
+				<Value Value="R" Decode="ECS 15"></Value>
+				<Value Value="S" Decode="ECS 16"></Value>
+				<Value Value="T" Decode="ECS 17"></Value>
+				<Value Value="U" Decode="ECS 18"></Value>
+				<Value Value="V" Decode="ECS 19"></Value>
+				<Value Value="W" Decode="ECS 20"></Value>
+				<Value Value="X" Decode="ECS 21"></Value>
+				<Value Value="Y" Decode="ECS 22"></Value>
+				<Value Value="1" Decode="ECS 23"></Value>
+				<Value Value="2" Decode="ECS 24"></Value>
+				<Value Value="3" Decode="ECS 25"></Value>
+				<Value Value="4" Decode="ECS 26"></Value>
+				<Value Value="5" Decode="ECS 27"></Value>
+				<Value Value="6" Decode="ECS 28"></Value>
+			</Attribute>
+		    <Attribute Name="ModelYear" Char="10">
+				<Value Value="X" Decode="1999"></Value>
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+				<Value Value="H" Decode="2017"></Value>
+				<Value Value="J" Decode="2018"></Value>
+				<Value Value="K" Decode="2019"></Value>
+				<Value Value="L" Decode="2020"></Value>
+				<Value Value="M" Decode="2021"></Value>
+				<Value Value="N" Decode="2022"></Value>
+				<Value Value="P" Decode="2023"></Value>
+				<Value Value="R" Decode="2024"></Value>
+				<Value Value="S" Decode="2025"></Value>
+				<Value Value="T" Decode="2026"></Value>
+				<Value Value="V" Decode="2027"></Value>
+				<Value Value="W" Decode="1998"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="1" Decode="CB"></Value>
+				<Value Value="2" Decode="CB"></Value>
+				<Value Value="3" Decode="BL"></Value>
+				<Value Value="4" Decode="CB"></Value>
+				<Value Value="5" Decode="CB"></Value>
+				<Value Value="6" Decode="Hw"></Value>
+				<Value Value="7" Decode="CB"></Value>
+				<Value Value="8" Decode="CB"></Value>
+				<Value Value="9" Decode="CB"></Value>
+				<Value Value="A" Decode="BL"></Value>
+				<Value Value="B" Decode="X400(Hw) or X300(BL)"></Value>
+				<Value Value="C" Decode="BL"></Value>
+				<Value Value="D" Decode="CB"></Value>
+				<Value Value="F" Decode="CB"></Value>
+				<Value Value="G" Decode="CB"></Value>
+				<Value Value="H" Decode="CB"></Value>
+				<Value Value="K" Decode="CB"></Value>
+				<Value Value="J" Decode="CB"></Value>
+				<Value Value="L" Decode="CB"></Value>
+				<Value Value="M" Decode="CB"></Value>
+				<Value Value="N" Decode="CB"></Value>
+				<Value Value="P" Decode="CB"></Value>
+				<Value Value="R" Decode="BL or CB"></Value>
+				<Value Value="S" Decode="BL or CB"></Value>
+				<Value Value="T" Decode="Pune"></Value>
+				<Value Value="V" Decode="Pune"></Value>
+				<Value Value="W" Decode="Pune"></Value>
+				<Value Value="X" Decode="Pune"></Value>
+				<Value Value="Y" Decode="Hw"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="5">
+				<Value Value="A" Decode="LHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="RHD"></Value>
+				<Value Value="E" Decode="LHD"></Value>
+				<Value Value="F" Decode="LHD"></Value>
+				<Value Value="G" Decode="RHD"></Value>
+				<Value Value="H" Decode="RHD"></Value>
+				<Value Value="J" Decode="LHD AWD"></Value>
+				<Value Value="L" Decode="RHD AWD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="5">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Manual"></Value>
+				<Value Value="C" Decode="Automatic"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+				<Value Value="E" Decode="Automatic"></Value>
+				<Value Value="F" Decode="Manual"></Value>
+				<Value Value="G" Decode="Automatic"></Value>
+				<Value Value="H" Decode="Manual"></Value>
+				<Value Value="J" Decode="Automatic"></Value>
+				<Value Value="L" Decode="Automatic"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="11">
+				<Value Value="X" Decode="2.5L AJ-V6"></Value>
+				<Value Value="Y" Decode="X400(2.0L AJ-V6) or X150(5.0L SC AJ-133)"></Value>
+				<Value Value="1" Decode="4.2L SC AJ36"></Value>
+				<Value Value="2" Decode="4.2L AJ-34"></Value>
+				<Value Value="3" Decode="4.2L SC AJ34"></Value>
+				<Value Value="4" Decode="3.5L AJ40"></Value>
+				<Value Value="5" Decode="4.2L AJ40"></Value>
+				<Value Value="6" Decode="2.0L AJD-I4"></Value>
+				<Value Value="7" Decode="2.7L AJd-V6"></Value>
+				<Value Value="8" Decode="3.0L AJ126 SC (P)"></Value>
+				<Value Value="9" Decode="4.2L SC AJ40"></Value>
+				<Value Value="A" Decode="3.2L AJ26"></Value>
+				<Value Value="B" Decode="X400(2.2L AJD-I4) or X300(4.0L AJ26)"></Value>
+				<Value Value="C" Decode="4.0L AJ26"></Value>
+				<Value Value="D" Decode="2.2L I4d"></Value>
+				<Value Value="E" Decode="4.0L SC AJ26"></Value>
+				<Value Value="F" Decode="3.0L AJ-V6"></Value>
+				<Value Value="G" Decode="4.0L AJ28"></Value>
+				<Value Value="H" Decode="4.2L AJ36"></Value>
+				<Value Value="J" Decode="X200(2.5L AJ-V6) or X351(5.0L SC AJ-133)"></Value>
+				<!--<Value Value="K" Decode="5.0L SC AJ-133"></Value>-->
+				<Value Value="K" Decode="3.0L V6d - low power"></Value>
+				<Value Value="L" Decode="5.0L AJ-133 "></Value>
+				<Value Value="M" Decode="5.0L SC AJ133"></Value>
+				<Value Value="N" Decode="3.0L AJTD V6"></Value>
+				<Value Value="P" Decode="2.0L GTDi (P)"></Value>
+				<Value Value="R" Decode="3.5L AJ-33"></Value>
+				<Value Value="S" Decode="4.2L AJ-33"></Value>
+				<Value Value="T" Decode="3.0L AJTD V6D"></Value>
+				<Value Value="V" Decode="2.2L AJTD i4"></Value>
+				<Value Value="W" Decode="3.0L AJ126 SC V6"></Value>
+				<Value Value="X" Decode="2.0L GTDi (P)"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- X351 - XJ											-->
+		<!--****************************************************-->
+	    <DecodeModel id="5">
+			<Version Ref="GlobalVIN.xls Issue:33 18-Oct-2007"></Version>
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Decode="X351"></Attribute>
+			<Attribute Name="ModelName" Decode="New XJ"></Attribute>
+			<Attribute Name="Market" Char="4">
+				<Value Value="A" Decode="ROW"></Value>
+				<Value Value="B" Decode="Canada"></Value>
+				<Value Value="C" Decode="ROW"></Value>
+				<Value Value="D" Decode="USA"></Value>
+				<Value Value="E" Decode="USA"></Value>
+				<Value Value="F" Decode="Canada"></Value>
+				<Value Value="G" Decode="Canada"></Value>
+				<Value Value="J" Decode="USA"></Value>
+				<Value Value="K" Decode="Japan"></Value>
+				<Value Value="L" Decode="Japan"></Value>
+				<Value Value="P" Decode="Mexico"></Value>
+				<Value Value="R" Decode="Mexico"></Value>
+				<Value Value="T" Decode="Mexico"></Value>
+				<Value Value="W" Decode="USA"></Value>
+				<Value Value="X" Decode="Canada"></Value>
+				<Value Value="Y" Decode="Mexico"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6,7">
+				<Value Value="10" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="11" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="12" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="13" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="14" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="15" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="16" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="17" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="18" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="19" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="20" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="21" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="22" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="23" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="24" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="25" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="26" Decode="LWB 4 dr 5 seat saloon"></Value>
+				<Value Value="27" Decode="LWB 4 dr 4 seat saloon"></Value>
+				<Value Value="28" Decode="LWB 4 dr 5 seat saloon"></Value>
+				<Value Value="29" Decode="LWB 4 dr 4 seat saloon"></Value>
+				<Value Value="30" Decode="Arm'd LWB 4 dr 5 seat saloon"></Value>
+				<Value Value="31" Decode="Arm'd LWB 4 dr 4 seat saloon"></Value>
+				<Value Value="32" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="33" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="34" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="35" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="36" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="37" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="38" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="39" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="40" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="41" Decode="LWB 4 door 5 seat saloon"></Value>
+                <Value Value="1A" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1C" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1D" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1E" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1F" Decode="SWB 4 door 4 seat saloon"></Value>
+				<Value Value="1G" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1H" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1J" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="1K" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="2A" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2B" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2C" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2D" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2E" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2F" Decode="LWB 4 door 4 seat saloon"></Value>
+				<Value Value="2G" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2H" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2J" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="2K" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="3B" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="3C" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="3D" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="3E" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="3F" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="3G" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="3H" Decode="SWB 4 door 5 seat saloon"></Value>
+				<Value Value="3J" Decode="LWB 4 door 5 seat saloon"></Value>
+				<Value Value="3K" Decode="LWB 4 door 5 seat saloon"></Value>			
+			</Attribute>
+			<Attribute Name="Trim" Char="6,7">
+				<Value Value="10" Decode="Luxury"></Value>
+				<Value Value="11" Decode="Luxury"></Value>
+				<Value Value="12" Decode="Premium Luxury"></Value>
+				<Value Value="13" Decode="Premium Luxury"></Value>
+				<Value Value="14" Decode="XJR"></Value>
+				<Value Value="15" Decode="XJR"></Value>
+				<Value Value="16" Decode="Portfolio"></Value>
+				<Value Value="17" Decode="Portfolio"></Value>
+				<Value Value="18" Decode="Supersport/Autobiography"></Value>
+				<Value Value="19" Decode="Supersport/Autobiography"></Value>
+				<Value Value="20" Decode="Luxury"></Value>
+				<Value Value="21" Decode="Luxury"></Value>
+				<Value Value="22" Decode="Premium Luxury"></Value>
+				<Value Value="23" Decode="Premium Luxury"></Value>
+				<Value Value="24" Decode="XJR"></Value>
+				<Value Value="25" Decode="XJR"></Value>
+				<Value Value="26" Decode="Portfolio"></Value>
+				<Value Value="27" Decode="Portfolio"></Value>
+				<Value Value="28" Decode="Supersport/Autobiography"></Value>
+				<Value Value="29" Decode="Supersport/Autobiography"></Value>
+				<Value Value="30" Decode="Prem Luxury"></Value>
+				<Value Value="31" Decode="Prem Luxury"></Value>
+				<Value Value="32" Decode="Prem Luxury"></Value>
+				<Value Value="33" Decode="Prem Luxury"></Value>
+				<Value Value="34" Decode="Portfolio LE"></Value>
+				<Value Value="35" Decode="Portfolio LE"></Value>
+				<Value Value="36" Decode="Supersport LE/Spt Pack"></Value>
+				<Value Value="37" Decode="Supersport LE/Spt Pack"></Value>
+				<Value Value="38" Decode="Portfolio LE/Spt Pack"></Value>
+				<Value Value="39" Decode="Supersport LE/Spt Pack"></Value>
+				<Value Value="40" Decode="Portfolio LE/Spt Pack"></Value>
+				<Value Value="41" Decode="Ultimate/Autobiography"></Value>
+                <Value Value="1A" Decode="Luxury"></Value>
+				<Value Value="1B" Decode="Luxury"></Value>
+				<Value Value="1C" Decode="Premium Luxury"></Value>
+				<Value Value="1D" Decode="Premium Luxury"></Value>
+				<Value Value="1E" Decode="XJR"></Value>
+				<Value Value="1F" Decode="XJR"></Value>
+				<Value Value="1G" Decode="Portfolio"></Value>
+				<Value Value="1H" Decode="Portfolio"></Value>
+				<Value Value="1J" Decode="Supersport/Autobiography"></Value>
+				<Value Value="1K" Decode="Super Luxury"></Value>
+				<Value Value="2A" Decode="Luxury"></Value>
+				<Value Value="2B" Decode="Luxury"></Value>
+				<Value Value="2C" Decode="Prem Luxury"></Value>
+				<Value Value="2D" Decode="Prem Luxury"></Value>
+				<Value Value="2E" Decode="XJR"></Value>
+				<Value Value="2F" Decode="XJR"></Value>
+				<Value Value="2G" Decode="Portfolio"></Value>
+				<Value Value="2H" Decode="Portfolio"></Value>
+				<Value Value="2J" Decode="Supersport/Autobiography"></Value>
+				<Value Value="2K" Decode="Ultimate/Autobiography"></Value>
+				<Value Value="3B" Decode="Prem Luxury LE"></Value>
+				<Value Value="3C" Decode="Prem Luxury LE"></Value>
+				<Value Value="3D" Decode="Portfolio LE"></Value>
+				<Value Value="3E" Decode="Portfolio LE"></Value>
+				<Value Value="3F" Decode="Supersport LE/Spt Pack/Autobiography"></Value>
+				<Value Value="3G" Decode="Supersport LE/Spt Pack/Autobiography"></Value>
+				<Value Value="3H" Decode="Portfolio LE/Spt Pack"></Value>
+				<Value Value="3J" Decode="Supersport LE/Spt Pack"></Value>
+				<Value Value="3K" Decode="Portfolio LE/Spt Pack"></Value>
+			</Attribute>
+			<Attribute Name="Emission" Char="8">
+				<Value Value="A" Decode="ECS 1"></Value>
+				<Value Value="B" Decode="ECS 2"></Value>
+				<Value Value="C" Decode="ECS 3"></Value>
+				<Value Value="D" Decode="ECS 4"></Value>
+				<Value Value="E" Decode="ECS 5"></Value>
+				<Value Value="F" Decode="ECS 6"></Value>
+				<Value Value="G" Decode="ECS 7"></Value>
+				<Value Value="H" Decode="ECS 8"></Value>
+				<Value Value="J" Decode="ECS 9"></Value>
+				<Value Value="K" Decode="ECS 10"></Value>
+				<Value Value="L" Decode="ECS 11"></Value>
+				<Value Value="M" Decode="ECS 12"></Value>
+				<Value Value="N" Decode="ECS 13"></Value>
+				<Value Value="P" Decode="ECS 14"></Value>
+				<Value Value="R" Decode="ECS 15"></Value>
+				<Value Value="S" Decode="ECS 16"></Value>
+				<Value Value="T" Decode="ECS 17"></Value>
+				<Value Value="U" Decode="ECS 18"></Value>
+				<Value Value="V" Decode="ECS 19"></Value>
+				<Value Value="W" Decode="ECS 20"></Value>
+				<Value Value="X" Decode="ECS 21"></Value>
+				<Value Value="Y" Decode="ECS 22"></Value>
+				<Value Value="1" Decode="ECS 23"></Value>
+				<Value Value="2" Decode="ECS 24"></Value>
+				<Value Value="3" Decode="ECS 25"></Value>
+				<Value Value="4" Decode="ECS 26"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="X" Decode="1999"></Value>
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+				<Value Value="H" Decode="2017"></Value>
+				<Value Value="J" Decode="2018"></Value>
+				<Value Value="K" Decode="2019"></Value>
+				<Value Value="L" Decode="2020"></Value>
+				<Value Value="M" Decode="2021"></Value>
+				<Value Value="N" Decode="2022"></Value>
+				<Value Value="P" Decode="2023"></Value>
+				<Value Value="R" Decode="2024"></Value>
+				<Value Value="S" Decode="2025"></Value>
+				<Value Value="T" Decode="2026"></Value>
+				<Value Value="V" Decode="2027"></Value>
+				<Value Value="W" Decode="1998"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="1" Decode="CB"></Value>
+				<Value Value="2" Decode="CB"></Value>
+				<Value Value="3" Decode="BL"></Value>
+				<Value Value="4" Decode="CB"></Value>
+				<Value Value="5" Decode="CB"></Value>
+				<Value Value="6" Decode="Hw"></Value>
+				<Value Value="7" Decode="CB"></Value>
+				<Value Value="8" Decode="CB"></Value>
+				<Value Value="9" Decode="CB"></Value>
+				<Value Value="A" Decode="BL"></Value>
+				<Value Value="B" Decode="X400(Hw) or X300(BL)"></Value>
+				<Value Value="C" Decode="BL"></Value>
+				<Value Value="F" Decode="CB"></Value>
+				<Value Value="G" Decode="CB"></Value>
+				<Value Value="H" Decode="CB"></Value>
+				<Value Value="K" Decode="CB"></Value>
+				<Value Value="J" Decode="CB"></Value>
+				<Value Value="L" Decode="CB"></Value>
+				<Value Value="M" Decode="CB"></Value>
+				<Value Value="N" Decode="CB"></Value>
+				<Value Value="P" Decode="CB"></Value>
+				<Value Value="R" Decode="BL or CB"></Value>
+				<Value Value="S" Decode="BL or CB"></Value>
+				<Value Value="T" Decode="Pune"></Value>
+				<Value Value="V" Decode="BL or CB"></Value>
+				<Value Value="W" Decode="Hw"></Value>
+				<Value Value="X" Decode="Pune"></Value>
+				<Value Value="Y" Decode="Hw"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="5">
+				<Value Value="A" Decode="LHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="RHD"></Value>
+				<Value Value="E" Decode="LHD"></Value>
+				<Value Value="F" Decode="LHD"></Value>
+				<Value Value="G" Decode="RHD"></Value>
+				<Value Value="H" Decode="RHD"></Value>
+				<Value Value="J" Decode="LHD AWD"></Value>
+				<Value Value="L" Decode="RHD AWD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="5">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Manual"></Value>
+				<Value Value="C" Decode="Automatic"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+				<Value Value="E" Decode="Automatic"></Value>
+				<Value Value="F" Decode="Manual"></Value>
+				<Value Value="G" Decode="Automatic"></Value>
+				<Value Value="H" Decode="Manual"></Value>
+				<Value Value="J" Decode="Automatic"></Value>
+				<Value Value="L" Decode="Automatic"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="11">
+				<Value Value="X" Decode="2.5L AJ-V6"></Value>
+				<Value Value="Y" Decode="X400(2.0L AJ-V6) or X150(5.0L SC AJ-133)"></Value>
+				<Value Value="1" Decode="4.2L SC AJ36"></Value>
+				<Value Value="2" Decode="4.2L AJ-34"></Value>
+				<Value Value="3" Decode="4.2L SC AJ34"></Value>
+				<Value Value="4" Decode="3.5L AJ40"></Value>
+				<Value Value="5" Decode="4.2L AJ40"></Value>
+				<Value Value="6" Decode="2.0L AJD-I4"></Value>
+				<Value Value="7" Decode="2.7L AJd-V6"></Value>
+				<Value Value="8" Decode="3.0L AJ126 SC (P)"></Value>
+				<Value Value="9" Decode="4.2L SC AJ40"></Value>
+				<Value Value="A" Decode="3.2L AJ26"></Value>
+				<Value Value="B" Decode="X400(2.2L AJD-I4) or X300(4.0L AJ26)"></Value>
+				<Value Value="C" Decode="4.0L AJ26"></Value>
+				<Value Value="D" Decode="4.0L SC AJ26"></Value>
+				<Value Value="E" Decode="4.0L SC AJ26"></Value>
+				<Value Value="F" Decode="3.0L AJ-V6"></Value>
+				<Value Value="G" Decode="4.0L AJ28"></Value>
+				<Value Value="H" Decode="4.2L AJ36"></Value>
+				<Value Value="J" Decode="X200(2.5L AJ-V6) or X351(5.0L SC AJ-133)"></Value>
+				<!--<Value Value="K" Decode="5.0L SC AJ-133"></Value>-->
+				<Value Value="K" Decode="3.0L V6d - low power"></Value>
+				<Value Value="L" Decode="5.0L AJ-133 "></Value>
+				<Value Value="M" Decode="5.0L SC AJ133"></Value>
+				<Value Value="N" Decode="3.0L AJTD V6"></Value>
+				<Value Value="P" Decode="2.0L GTDi (P)"></Value>
+				<Value Value="R" Decode="3.5L AJ-33"></Value>
+				<Value Value="S" Decode="4.2L AJ-33"></Value>
+				<Value Value="T" Decode="3.0L AJTD V6D"></Value>
+				<Value Value="V" Decode="3.0L AJ-V6"></Value>
+				<Value Value="W" Decode="3.0L AJ-V6"></Value>
+				<Value Value="X" Decode="2.0L GTDi (P)"></Value>
+			</Attribute>
+		</DecodeModel>
+        <!--****************************************************-->
+		<!--X400 Jag											-->
+		<!--****************************************************-->
+	   <DecodeModel id="6">
+			<Version Ref="GlobalVIN.xls Issue:33 18-Oct-2007"></Version>
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Decode="X400"></Attribute>
+			<Attribute Name="ModelName" Decode="X-Type"></Attribute>
+			<Attribute Name="Market" Char="4">
+				<Value Value="A" Decode="ROW"></Value>
+				<Value Value="B" Decode="Canada"></Value>
+				<Value Value="C" Decode="ROW"></Value>
+				<Value Value="D" Decode="USA"></Value>
+				<Value Value="E" Decode="USA"></Value>
+				<Value Value="F" Decode="Canada"></Value>
+				<Value Value="G" Decode="Canada"></Value>
+				<Value Value="J" Decode="USA"></Value>
+				<Value Value="K" Decode="Japan"></Value>
+				<Value Value="L" Decode="Japan"></Value>
+				<Value Value="P" Decode="Mexico"></Value>
+				<Value Value="R" Decode="Mexico"></Value>
+				<Value Value="T" Decode="Mexico"></Value>
+				<Value Value="W" Decode="USA"></Value>
+				<Value Value="X" Decode="Canada"></Value>
+				<Value Value="Y" Decode="Mexico"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6,7">
+				<Value Value="51" Decode="4 door saloon"></Value>
+				<Value Value="52" Decode="4 door saloon"></Value>
+				<Value Value="53" Decode="4 door saloon"></Value>
+				<Value Value="54" Decode="4 door estate"></Value>
+				<Value Value="55" Decode="4 door estate"></Value>
+				<Value Value="56" Decode="4 door estate"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6,7">
+				<Value Value="51" Decode="High series"></Value>
+				<Value Value="52" Decode="Entry series"></Value>
+				<Value Value="53" Decode="Sport series"></Value>
+				<Value Value="54" Decode="High series"></Value>
+				<Value Value="55" Decode="Entry series"></Value>
+				<Value Value="56" Decode="Sport series"></Value>
+			</Attribute>
+			<Attribute Name="Emission" Char="8">
+				<Value Value="A" Decode="ECS 1"></Value>
+				<Value Value="B" Decode="ECS 2"></Value>
+				<Value Value="C" Decode="ECS 3"></Value>
+				<Value Value="D" Decode="ECS 4"></Value>
+				<Value Value="E" Decode="ECS 5"></Value>
+				<Value Value="F" Decode="ECS 6"></Value>
+				<Value Value="G" Decode="ECS 7"></Value>
+				<Value Value="H" Decode="ECS 8"></Value>
+				<Value Value="J" Decode="ECS 9"></Value>
+				<Value Value="K" Decode="ECS 10"></Value>
+				<Value Value="L" Decode="ECS 11"></Value>
+				<Value Value="M" Decode="ECS 12"></Value>
+				<Value Value="N" Decode="ECS 13"></Value>
+				<Value Value="P" Decode="ECS 14"></Value>
+				<Value Value="R" Decode="ECS 15"></Value>
+				<Value Value="S" Decode="ECS 16"></Value>
+				<Value Value="T" Decode="ECS 17"></Value>
+				<Value Value="U" Decode="ECS 18"></Value>
+				<Value Value="V" Decode="ECS 19"></Value>
+				<Value Value="W" Decode="ECS 20"></Value>
+				<Value Value="X" Decode="ECS 21"></Value>
+				<Value Value="Y" Decode="ECS 22"></Value>
+				<Value Value="1" Decode="ECS 23"></Value>
+				<Value Value="2" Decode="ECS 24"></Value>
+				<Value Value="3" Decode="ECS 25"></Value>
+				<Value Value="4" Decode="ECS 26"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="X" Decode="1999"></Value>
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+				<Value Value="H" Decode="2017"></Value>
+				<Value Value="J" Decode="2018"></Value>
+				<Value Value="K" Decode="2019"></Value>
+				<Value Value="L" Decode="2020"></Value>
+				<Value Value="M" Decode="2021"></Value>
+				<Value Value="N" Decode="2022"></Value>
+				<Value Value="P" Decode="2023"></Value>
+				<Value Value="R" Decode="2024"></Value>
+				<Value Value="S" Decode="2025"></Value>
+				<Value Value="T" Decode="2026"></Value>
+				<Value Value="V" Decode="2027"></Value>
+				<Value Value="W" Decode="1998"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="1" Decode="CB"></Value>
+				<Value Value="2" Decode="CB"></Value>
+				<Value Value="3" Decode="BL"></Value>
+				<Value Value="4" Decode="CB"></Value>
+				<Value Value="5" Decode="CB"></Value>
+				<Value Value="6" Decode="Hw"></Value>
+				<Value Value="7" Decode="CB"></Value>
+				<Value Value="8" Decode="CB"></Value>
+				<Value Value="9" Decode="CB"></Value>
+				<Value Value="A" Decode="BL"></Value>
+				<Value Value="B" Decode="Hw"></Value>
+				<Value Value="C" Decode="BL"></Value>
+				<Value Value="F" Decode="CB"></Value>
+				<Value Value="G" Decode="CB"></Value>
+				<Value Value="H" Decode="CB"></Value>
+				<Value Value="K" Decode="CB"></Value>
+				<Value Value="J" Decode="CB"></Value>
+				<Value Value="L" Decode="CB"></Value>
+				<Value Value="M" Decode="CB"></Value>
+				<Value Value="N" Decode="CB"></Value>
+				<Value Value="P" Decode="CB"></Value>
+				<Value Value="R" Decode="BL or CB"></Value>
+				<Value Value="S" Decode="BL or CB"></Value>
+				<Value Value="T" Decode="BL or CB"></Value>
+				<Value Value="V" Decode="BL or CB"></Value>
+				<Value Value="W" Decode="Hw"></Value>
+				<Value Value="X" Decode="Hw"></Value>
+				<Value Value="Y" Decode="Hw"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="5">
+				<Value Value="A" Decode="LHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="RHD"></Value>
+				<Value Value="E" Decode="LHD"></Value>
+				<Value Value="F" Decode="LHD"></Value>
+				<Value Value="G" Decode="RHD"></Value>
+				<Value Value="H" Decode="RHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="5">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Manual"></Value>
+				<Value Value="C" Decode="Automatic"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+				<Value Value="E" Decode="Automatic"></Value>
+				<Value Value="F" Decode="Manual"></Value>
+				<Value Value="G" Decode="Automatic"></Value>
+				<Value Value="H" Decode="Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="11">
+				<Value Value="X" Decode="2.5L AJ-V6"></Value>
+				<Value Value="Y" Decode="2.0L AJ-V6"></Value>
+				<Value Value="1" Decode="4.2L SC AJ36"></Value>
+				<Value Value="2" Decode="4.2L AJ-34"></Value>
+				<Value Value="3" Decode="4.2L SC AJ34"></Value>
+				<Value Value="4" Decode="3.5L AJ40"></Value>
+				<Value Value="5" Decode="4.2L AJ40"></Value>
+				<Value Value="6" Decode="2.0L AJD-I4"></Value>
+				<Value Value="7" Decode="2.7L AJd-V6"></Value>
+				<Value Value="8" Decode="3.0L AJ126 SC (P)"></Value>
+				<Value Value="9" Decode="4.2L SC AJ40"></Value>
+				<Value Value="A" Decode="3.2L AJ26"></Value>
+				<Value Value="B" Decode="2.2L AJD-I4"></Value>
+				<Value Value="C" Decode="4.0L AJ26"></Value>
+				<Value Value="D" Decode="4.0L SC AJ26"></Value>
+				<Value Value="E" Decode="4.0L SC AJ26"></Value>
+				<Value Value="F" Decode="3.0L AJ-V6"></Value>
+				<Value Value="G" Decode="4.0L AJ28"></Value>
+				<Value Value="H" Decode="4.2L AJ36"></Value>
+				<Value Value="J" Decode="X200(2.5L AJ-V6)"></Value>
+				<!--<Value Value="K" Decode="5.0L SC AJ-133"></Value>-->
+				<Value Value="K" Decode="3.0L V6d - low power"></Value>
+				<Value Value="L" Decode="5.0L AJ-133 "></Value>
+				<Value Value="M" Decode="5.0L SC AJ133"></Value>
+				<Value Value="N" Decode="3.0L V6d"></Value>
+				<Value Value="P" Decode="2.2L I4d"></Value>
+				<Value Value="R" Decode="3.5L AJ-33"></Value>
+				<Value Value="S" Decode="4.2L AJ-33"></Value>
+				<Value Value="T" Decode="4.2L SC AJ33"></Value>
+				<Value Value="V" Decode="3.0L AJ-V6"></Value>
+				<Value Value="W" Decode="3.0L AJ-V6"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- X760 - New Small Jaguar -->
+		<!--****************************************************-->
+		<DecodeModel id="26">
+			<Attribute Name="Brand" Decode="Jaguar"></Attribute>
+			<Attribute Name="Model" Decode="X760"></Attribute>
+			<Attribute Name="ModelName" Decode="XE"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="B" Decode="NonNAS"></Value>
+				<Value Value="D" Decode="NAS"></Value>
+				<Value Value="E" Decode="NAS"></Value>
+				<Value Value="F" Decode="NAS"></Value>
+				<Value Value="G" Decode="NAS"></Value>
+				<Value Value="H" Decode="NAS"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="B" Decode="STANDARD"></Value>
+				<Value Value="D" Decode="PURE"></Value>
+				<Value Value="E" Decode="PRESTIGE"></Value>
+				<Value Value="F" Decode="R SPORT"></Value>
+				<Value Value="G" Decode="S"></Value>
+				<Value Value="H" Decode="PORTFOLIO"></Value>				
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="4" Decode="4 DOOR SEDAN"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="7">
+				<Value Value="A" Decode="RHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="7">
+				<Value Value="A" Decode="Automatic RWD"></Value>
+				<Value Value="B" Decode="Automatic RWD"></Value>
+				<Value Value="C" Decode="Manual RWD"></Value>
+				<Value Value="D" Decode="Manual RWD"></Value>
+			</Attribute>	
+			<Attribute Name="Engine" Char="8">
+				<Value Value="G" Decode="204PT - 2.0 GTDi Petrol (Low Power)"></Value>
+				<Value Value="H" Decode="204PT - 2.0 GTDi Petrol (High Power)"></Value>
+				<Value Value="M" Decode="204DT - 2.0 AJ200D Mid without cDPF"></Value>
+				<Value Value="N" Decode="204DT - 2.0 AJ200D Mid with cDPF"></Value>
+				<Value Value="V" Decode="306PS - V6 3.0 s/c Petrol"></Value>
+				<Value Value="1" Decode="204DT - 2.0 AJ200D Mid LF with cDPF"></Value>
+			</Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="G" Decode="2016"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+				<Value Value="C" Decode="CASTLE BROM"></Value>
+			</Attribute>
+		</DecodeModel>	
+		<!--****************************************************-->
+		<!-- L316 - Defender Non-NAS							-->
+		<!--****************************************************-->
+		<!-- Last Update: 17-Jan-2012 Ref: L316 12MY VIN Charts Issue 8(H).XLS -->
+		<!-- Last Update: 15-Jun-2012 Ref: LD13MY F.XLS (Issue 6) -->
+		<DecodeModel id="10">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L316"></Attribute>
+			<Attribute Name="ModelName" Decode="Defender"></Attribute>
+			<Attribute Name="Market" Decode="NonNAS"></Attribute>
+			<Attribute Name="Trim" Char="6">
+				<Value Value="H" Decode="110 Standard"></Value>
+				<Value Value="K" Decode="130 Standard"></Value>
+				<Value Value="V" Decode="90 Standard"></Value>
+				<Value Value="A" Decode="90 Extra H/Duty"></Value>
+				<Value Value="B" Decode="110 H/Duty"></Value>
+				<Value Value="C" Decode="130 Extra H/Duty"></Value>
+				<Value Value="L" Decode="147 South Africa"></Value>
+				<Value Value="W" Decode="90 H/Duty"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="7">
+				<Value Value="A" Decode="Regular"></Value>
+				<Value Value="B" Decode="3 Door Station Wagon"></Value>
+				<Value Value="F" Decode="4 Door Crew Cab Non H/Cap"></Value>
+				<Value Value="H" Decode="H/Cap with or without 4 Door Crew Cab"></Value>
+				<Value Value="J" Decode="7 Door Station Wagon"></Value>
+				<Value Value="L" Decode="Soft Top"></Value>
+				<Value Value="M" Decode="5 Door Station Wagon"></Value>
+				<Value Value="N" Decode="Hard Top"></Value>
+				<Value Value="R" Decode="Single Cab Pick Up"></Value>
+				<Value Value="S" Decode="Double Cab Pick Up"></Value>
+				<Value Value="T" Decode="2 Door High Capacity Pick Up"></Value>
+				<Value Value="V" Decode="Crew Cab High Capacity Pick Up"></Value>
+				<Value Value="W" Decode="2 Door Chassis Cab"></Value>
+				<Value Value="X" Decode="4 Door Chassis Cab (Crew Cab)"></Value>
+				<Value Value="Y" Decode="5 Door Station Wagon Utility"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="B" Decode="2.5 Diesel Turbo (Falcon)"></Value>
+				<Value Value="C" Decode="2.5 Diesel Nat Asp"></Value>
+				<Value Value="D" Decode="2.5 Petrol Carb"></Value>
+				<Value Value="F" Decode="2.5 Tdi Non EEGR /Cat (Gem)"></Value>
+				<Value Value="V" Decode="3.5 V8 Petrol Carb Non Cat"></Value>
+				<Value Value="6" Decode="2.5 Tdi EEGR and/or Cat (Gem)"></Value>
+				<Value Value="Y" Decode="2.0 Lti Petrol Cat"></Value>
+				<Value Value="8" Decode="2.5 (Storm)"></Value>
+				<Value Value="9" Decode="2.8 Petrol M52 (BMW)"></Value>
+				<Value Value="M" Decode="4.0 V8i Petrol"></Value>
+				<Value Value="K" Decode="2.5 Tdi cooled EEGR and/or Cat (Gem)"></Value>
+				<Value Value="1" Decode="2.5 Td5 EU1 Storm"></Value>
+				<Value Value="5" Decode="2.5 15P EU3 Storm"></Value>
+				<Value Value="7" Decode="2.5 18P RoW Storm"></Value>
+				<Value Value="S" Decode="2.4 Puma Euro Spec (EU4)"></Value>
+				<Value Value="T" Decode="2.4 Puma ROW Spec (EU2)"></Value>
+				<Value Value="N" Decode="2.4 Puma 24V Military Euro Spec (EU4)"></Value>
+				<Value Value="W" Decode="2.4 Puma 24V Military ROW Spec (EU2)"></Value>
+				<Value Value="P" Decode="2.2 Puma Euro Spec (EU5)"></Value>
+				<Value Value="R" Decode="2.2 Puma ROW Spec (Non EU5)"></Value>
+				<Value Value="3" Decode="2.2 Puma 24V Military Spec (EU5)"></Value>
+				<Value Value="4" Decode="2.2 Puma 24V Military Spec (Non EU5)"></Value>
+			</Attribute>				
+			<Attribute Name="Driver" Char="9">
+				<Value Value="3" Decode="RHD"></Value>
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="7" Decode="RHD"></Value>
+				<Value Value="8" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="9">
+				<Value Value="3" Decode="4 Speed Automatic"></Value>
+				<Value Value="4" Decode="4 Speed Automatic"></Value>
+				<Value Value="7" Decode="6 Speed Manual"></Value>
+				<Value Value="8" Decode="6 Speed Manual"></Value>
+			</Attribute>	
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+			</Attribute>			
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+				<Value Value="B" Decode="Military - SOLIHULL (Not currently used)"></Value>
+				<Value Value="C" Decode="Zimbabwe"></Value>
+				<Value Value="D" Decode="Thailand"></Value>
+				<Value Value="F" Decode="KD"></Value>
+				<Value Value="J" Decode="Malaysia"></Value>
+				<Value Value="K" Decode="Kenya"></Value>
+				<Value Value="N" Decode="Morocco"></Value>
+				<Value Value="P" Decode="Pakistan"></Value>					
+				<Value Value="V" Decode="South Africa"></Value>
+				<Value Value="W" Decode="Turkey"></Value>
+				<Value Value="Y" Decode="Australia"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L316 - Defender NAS								-->
+		<!--****************************************************-->			
+		<DecodeModel id="11">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L316"></Attribute>
+			<Attribute Name="ModelName" Decode="Defender"></Attribute>
+			<Attribute Name="Market" Decode="NAS"></Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="B" Decode="3 Door Station Wagon"></Value>
+				<Value Value="M" Decode="5 Door Station Wagon"></Value>
+				<Value Value="3" Decode="3 Door Station Wagon"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="V" Decode="90 Standard"></Value>
+				<Value Value="H" Decode="110 Standard"></Value>
+				<Value Value="W" Decode="90 H/Duty 2550 kg"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="Solihull"></Value>
+				<Value Value="T" Decode="Brazil"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="8">
+				<Value Value="3" Decode="RHD"></Value>
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="7" Decode="RHD"></Value>
+				<Value Value="8" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="8">
+				<Value Value="3" Decode="4 Speed Automatic"></Value>
+				<Value Value="4" Decode="4 Speed Automatic"></Value>
+				<Value Value="7" Decode="6 Speed Manual"></Value>
+				<Value Value="8" Decode="6 Speed Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="S" Decode="2.4 Puma Euro Spec (EU4)"></Value>
+				<Value Value="2" Decode="4.0 V8 Petrol Efi Cat"></Value>
+				<Value Value="P" Decode="2.2 Puma Euro Spec (EU5)"></Value>
+				<Value Value="R" Decode="2.2 Puma RoW Spec (Non EU5)"></Value>
+			</Attribute>
+		</DecodeModel>
+		<DecodeModel id="44">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L316"></Attribute>
+			<Attribute Name="ModelName" Decode="Defender"></Attribute>
+			<Attribute Name="BodyStyle" Char="7">
+				<Value Value="A" Decode="Regular"></Value>
+				<Value Value="B" Decode="3 Door Station Wagon"></Value>
+				<Value Value="F" Decode="4 Door Crew Cab Non H/Cap"></Value>
+				<Value Value="H" Decode="H/Cap with or without 4 Door Crew Cab"></Value>
+				<Value Value="M" Decode="5 Door Station Wagon"></Value>
+				<Value Value="N" Decode="5 Door Utility (5 seater)"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6">
+				<Value Value="H" Decode="110 Standard"></Value>
+				<Value Value="K" Decode="130 Standard"></Value>
+				<Value Value="V" Decode="90 Standard"></Value>
+			</Attribute>
+			<Attribute Name="Market" Decode="Brazil"></Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="Y" Decode="2000"></Value>
+				<Value Value="1" Decode="2001"></Value>
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="T" Decode="Brazil"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="9">
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="8" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="9">
+				<Value Value="4" Decode="4 Speed Automatic"></Value>
+				<Value Value="8" Decode="5 Speed Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="E" Decode="2.5 Tdi Non EEGR/Cat (maxxion)"></Value>
+				<Value Value="S" Decode="2.4 Puma Euro Spec (EU4)"></Value>
+				<Value Value="T" Decode="2.4 Puma ROW Spec"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L319 - Discovery									-->
+		<!--****************************************************-->
+		<!-- Last Update: 11-Sep-2007 Ref: L319 08MY VIN Charts Issue E.XLS -->
+		<!-- Last Update: 19-Feb-2008 Ref: L319 09MY VIN Charts Issue C.XLS -->
+		<!-- Last Update: 09-May-2008 Ref: L319 09MY VIN Charts Issue E.XLS -->
+		<!-- Last Update: 06-Feb-2009 Ref: L319 09MY VIN Charts Issue B.XLS -->
+		<!-- Last Update: 22-Sep-2009 Ref: L319 10MY VIN Charts Issue C.XLS -->
+		<!-- Last Update: 07-Oct-2009 Ref: L319 11MY VIN Charts Issue C.XLS -->
+		<!-- Last Update: 17-Jan-2012 Ref: L319 12MY VIN Charts Issue I.XLS -->
+		<!-- Last Update: 31-May-2013 Ref: L319 14MY VIN Charts Issue G.XLS -->
+		<DecodeModel id="12">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L319"></Attribute>
+			<Attribute Name="ModelName" Decode="Discovery 3\4"></Attribute>
+			<Attribute Name="Market" Decode="EU and ROW"></Attribute>
+			<Attribute Name="Trim" Char="6">
+				<Value Value="A" Decode="Standard"></Value>
+				<Value Value="J" Decode="Japan"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="7">
+				<Value Value="A" Decode="4dr"></Value>
+				<Value Value="D" Decode="2x Seat Commercial"></Value>
+				<Value Value="E" Decode="5x Seat Commercial"></Value>
+				<Value Value="K" Decode="Armoured"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="1" Decode="276DT - V6 2.7 Diesel non cDPF"></Value>
+				<Value Value="4" Decode="406PN - V6 4.0 Petrol"></Value>
+				<Value Value="5" Decode="448PN - AJ V8 4.4 Petrol"></Value>
+				<Value Value="6" Decode="276DT - V6 2.7 Diesel with cDPF"></Value>
+				<Value Value="D" Decode="508PN - V8 5.0 NA Petrol"></Value>
+				<Value Value="F" Decode="306DT - V6 3.0 Hi Pwr Diesel non cDPF"></Value>
+				<Value Value="G" Decode="306DT - V6 3.0 Hi Pwr Diesel with cDPF"></Value>
+				<Value Value="M" Decode="306DT - V6 3.0 Lo Pwr Diesel with cDPF"></Value>
+                <Value Value="N" Decode="306DT - V6 3.0 Lo Pwr Diesel non cDPF"></Value>
+                <Value Value="V" Decode="306PS - V6 3.0 SC Petrol"></Value>				
+			</Attribute>
+			<Attribute Name="Driver" Char="9">
+				<Value Value="3" Decode="RHD"></Value>
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="5" Decode="RHD"></Value>
+				<Value Value="6" Decode="LHD"></Value>
+				<Value Value="7" Decode="RHD"></Value>
+				<Value Value="8" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="9">
+				<Value Value="3" Decode="Automatic 6 Spd"></Value>
+				<Value Value="4" Decode="Automatic 6 Spd"></Value>
+				<Value Value="5" Decode="Automatic 8 Spd"></Value>
+				<Value Value="6" Decode="Automatic 8 Spd"></Value>
+				<Value Value="7" Decode="Manual"></Value>
+				<Value Value="8" Decode="Manual"></Value>
+			</Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+				<Value Value="G" Decode="CKD Russia (St P'burg)"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L319 - Discovery - USA Canada -->
+		<!--****************************************************-->		
+		<DecodeModel id="13">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L319"></Attribute>
+			<Attribute Name="ModelName" Decode="Land Rover LR3\LR4"></Attribute>
+			<Attribute Name="Market" Decode="USA and Canada"></Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="Standard"></Value>
+				<Value Value="B" Decode="TL 'S' LR3\LR4 Base 5 seats"></Value>
+				<Value Value="C" Decode="TL 'S' LR3\LR4 Base 7 seats"></Value>
+				<Value Value="D" Decode="TL 'SE' 5 seats"></Value>
+				<Value Value="E" Decode="TL 'SE' 7 seats"></Value>
+				<Value Value="F" Decode="TL 'HSE' 5 seats"></Value>
+				<Value Value="G" Decode="TL 'HSE' 7 seats"></Value>
+				<Value Value="H" Decode="TL 'HSE Lux' 5 seats"></Value>
+				<Value Value="K" Decode="TL 'HSE Lux' 7 seats"></Value>
+				<Value Value="L" Decode="TL 'HSE Plus' 5 seats"></Value>
+				<Value Value="M" Decode="TL 'HSE Plus' 7 seats"></Value>
+				<Value Value="N" Decode="China"></Value>
+			</Attribute>			
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="2" Decode="4dr Station Wagon"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="1" Decode="276DT - V6 2.7 Diesel"></Value>
+				<Value Value="4" Decode="406PN - V6 4.0 Petrol"></Value>
+				<Value Value="5" Decode="448PN - AJ V8 4.4 Petrol"></Value>
+				<Value Value="D" Decode="508PN - V8 5.0 Petrol"></Value>
+				<Value Value="F" Decode="306DT - V6 3.0 Diesel (China)"></Value>
+				<Value Value="N" Decode="306DT - V6 3.0 Diesel (China)"></Value>
+				<Value Value="V" Decode="306PS - V6 3.0 SC Petrol"></Value>				
+			</Attribute>	
+			<Attribute Name="Driver" Char="8">
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="6" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="8">
+				<Value Value="4" Decode="Automatic 6 Spd"></Value>
+				<Value Value="6" Decode="Automatic 8 Spd"></Value>
+			</Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L320 - RR Sport									-->
+		<!--****************************************************-->
+		<!-- Last Update: 03-Feb-2009 Ref: LS 09MY issue B.XLS -->
+		<!-- Last Update: 22-Sep-2009 Ref: LS 10MY issue C.XLS -->
+		<!-- Last Update: 07-Oct-2009 Ref: LS 11MY issue C.XLS -->
+		<!-- Last Update: 17-Jan-2012 Ref: LS 12MY issue F.XLS (22-02-2011) -->
+		<DecodeModel id="14">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L320"></Attribute>
+			<Attribute Name="ModelName" Decode="Range Rover Sport"></Attribute>
+			<Attribute Name="Market" Decode="EU and ROW"></Attribute>
+			<Attribute Name="BodyStyle" Char="7">
+				<Value Value="A" Decode="4dr"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6">
+				<Value Value="A" Decode="Standard"></Value>
+				<Value Value="J" Decode="Japan"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="9">
+				<Value Value="3" Decode="RHD"></Value>
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="5" Decode="RHD"></Value>
+				<Value Value="6" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="9">
+				<Value Value="3" Decode="Automatic 6 Spd"></Value>
+				<Value Value="4" Decode="Automatic 6 Spd"></Value>
+				<Value Value="5" Decode="Automatic 8 Spd"></Value>
+				<Value Value="6" Decode="Automatic 8 Spd"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="1" Decode="276DT - V6 2.7 Diesel"></Value>
+				<Value Value="2" Decode="368DT - V8 3.6 Diesel"></Value>
+				<Value Value="3" Decode="428PS - AJ V8 4.2 SC Petrol"></Value>
+				<Value Value="5" Decode="448PN - AJ V8 4.4 Petrol"></Value>
+				<Value Value="6" Decode="276DT - V6 2.7 Diesel with cDPF"></Value>
+				<Value Value="7" Decode="368DT - V8 3.6 Diesel with cDPF"></Value>
+				<Value Value="D" Decode="508PN - V8 5.0 NA Petrol"></Value>
+				<Value Value="E" Decode="508PS - V8 5.0 SC Petrol"></Value>
+				<Value Value="F" Decode="306DT - V6 3.0 Diesel"></Value>
+				<Value Value="G" Decode="306DT - V6 3.0 Diesel with cDPF"></Value>
+				<Value Value="M" Decode="306DT - V6 3.0 Diesel with cDPF"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L320 - RR Sport - USA Canada -->
+		<!--****************************************************-->		
+		<DecodeModel id="15">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L320"></Attribute>
+			<Attribute Name="ModelName" Decode="Range Rover Sport"></Attribute>
+			<Attribute Name="Market" Decode="USA and Canada"></Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="2" Decode="4dr Station Wagon"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="Standard"></Value>			
+				<Value Value="B" Decode="TL 'S' 5 seats"></Value>
+				<Value Value="D" Decode="TL 'SE' 5 seats"></Value>
+				<Value Value="F" Decode="TL 'HSE' 5 seats"></Value>
+				<Value Value="K" Decode="TL 'LUX' 5 seats"></Value>
+				<Value Value="H" Decode="TL 'SC' 5 seats"></Value>
+				<Value Value="N" Decode="China"></Value>
+				<Value Value="P" Decode="Autobiography"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="8">
+				<Value Value="4" Decode="LHD"></Value>
+				<Value Value="6" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="8">
+				<Value Value="4" Decode="Automatic 6 Spd"></Value>
+				<Value Value="6" Decode="Automatic 8 Spd"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="2" Decode="368DT - V8 3.6 Diesel (China)"></Value>
+				<Value Value="3" Decode="428PS - AJ V8 4.2 SC Petrol"></Value>
+				<Value Value="5" Decode="448PN - AJ V8 4.4 Petrol"></Value>
+				<Value Value="F" Decode="306DT - V6 3.0 Diesel (China)"></Value>
+				<Value Value="D" Decode="508PN - V8 5.0 NA Petrol"></Value>
+				<Value Value="E" Decode="508PS - V8 5.0 SC Petrol"></Value>
+				<Value Value="G" Decode="306DT - V6 3.0 Diesel with cDPF"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L322 - Range Rover									-->
+		<!--****************************************************-->
+		<!--Last Update: 18-Jan-2008 Ref: LM09MY Issue A -->
+		<!--Last Update: 05-Sep-2007 Ref: L322 08MY VIN Charts Issue No. 21 08MYD, Dated 03-Aug-07 -->
+		<!--Last Update: 17-Nov-2009 Ref: LM11MY Issue A-->
+		<!--Last Update: 17-Jan-2012 Ref: L322 12MY VIN Charts Issue 32 B.XLS (13-Dec-10) -->
+		<DecodeModel id="16">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L322"></Attribute>
+			<Attribute Name="ModelName" Decode="Range Rover"></Attribute>
+			<Attribute Name="Market" Decode="EU and ROW"></Attribute>
+			<Attribute Name="BodyStyle" Char="7">
+				<Value Value="M" Decode="4 Door"></Value>
+				<Value Value="K" Decode="Armoured"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6">
+				<Value Value="A" Decode="Standard"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="4" Decode="2005"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="9">
+				<Value Value="3" Decode="RHD"></Value>
+				<Value Value="4" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="9">
+				<Value Value="3" Decode="Automatic"></Value>
+				<Value Value="4" Decode="Automatic"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="2" Decode="368DT - V8 3.6 Diesel"></Value>
+				<Value Value="3" Decode="428PS - AJ V8 4.2 SC Petrol"></Value>
+				<Value Value="5" Decode="448PN - AJ V8 4.4 Petrol"></Value>
+				<Value Value="7" Decode="368DT - V8 3.6 Diesel WITH DPF"></Value>
+				<Value Value="A" Decode="448S2 - 4.4 V8 Catalyst"></Value>
+				<Value Value="B" Decode="448S2 - 4.4 V8 Washcoat Catalyst"></Value>
+				<Value Value="C" Decode="306D1 - 3.0 6 cyl Diesel"></Value>
+				<Value Value="D" Decode="508PN - AJ V8 5.0 NA Petrol"></Value>
+				<Value Value="E" Decode="508PS - AJ V8 5.0 SC Petrol"></Value>
+				<Value Value="H" Decode="448DT - V8 4.4 Diesel"></Value>
+				<Value Value="J" Decode="448DT - V8 4.4 Diesel WITH DPF"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--L322 USA, Canada, Mexico, Korea, China-->
+		<DecodeModel id="17">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L322"></Attribute>
+			<Attribute Name="ModelName" Decode="Range Rover"></Attribute>
+			<Attribute Name="Market" Decode="USA Canada Mexico China Korea"></Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="1" Decode="4 Door Station Wagon"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="S"></Value>
+				<Value Value="B" Decode="HSE (Without Luxury Pack)"></Value>
+				<Value Value="C" Decode="HSE (With Luxury Pack)"></Value>
+				<Value Value="D" Decode="Limited Edition"></Value>
+				<Value Value="E" Decode="HSE (Without Luxury Pack)"></Value>
+				<Value Value="F" Decode="HSE (With Luxury Pack)"></Value>
+				<Value Value="G" Decode="SE"></Value>
+				<Value Value="H" Decode="Westminster - Autobiography"></Value>
+				<Value Value="N" Decode="China"></Value>
+				<Value Value="P" Decode="Autobiography"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="4" Decode="2005"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="8">
+				<Value Value="4" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="8">
+				<Value Value="4" Decode="Automatic"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="1" Decode="448S2 - 4.4 V8 Petrol"></Value>
+				<Value Value="2" Decode="368DT - V8 3.6 Diesel"></Value>
+				<Value Value="3" Decode="428PS - AJ V8 4.2 SC Petrol"></Value>
+				<Value Value="5" Decode="448PN - AJ V8 4.4 Petrol"></Value>
+				<Value Value="D" Decode="508PN - V8 5.0 NA Petrol"></Value>
+				<Value Value="E" Decode="508PS - V8 5.0 SC Petrol"></Value>
+				<Value Value="H" Decode="448DT - V8 4.4 Diesel"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L359 - 'Old' Freelander 							-->
+		<!--****************************************************-->
+		<DecodeModel id="18">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L314"></Attribute>
+			<Attribute Name="ModelName" Decode="Freelander"></Attribute>
+			<Attribute Name="Market" Decode="NonNAS"></Attribute>
+			<Attribute Name="BodyStyle" Char="7">
+				<Value Value="A" Decode="3 DOOR"></Value>
+				<Value Value="B" Decode="5 DOOR"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="6">
+				<Value Value="A" Decode="TL 1"></Value>
+				<Value Value="F" Decode="SPORTS SUSPENSION"></Value>
+				<Value Value="B" Decode="COMMERCIAL"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+				<Value Value="D" Decode="KD -THAILAND"></Value>
+				<Value Value="J" Decode="KD -MALAYSIA"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="9">
+				<Value Value="1" Decode="RHD"></Value>
+				<Value Value="2" Decode="LHD"></Value>
+				<Value Value="7" Decode="RHD"></Value>
+				<Value Value="8" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="9">
+				<Value Value="1" Decode="Automatic"></Value>
+				<Value Value="2" Decode="Automatic"></Value>
+				<Value Value="7" Decode="Manual"></Value>
+				<Value Value="8" Decode="Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="A" Decode="1.8K16 HOU"></Value>
+				<Value Value="C" Decode="1.8K16 LOU"></Value>
+				<Value Value="D" Decode="1.8K16 LOL"></Value>
+				<Value Value="F" Decode="1.8K16 HOL"></Value>
+				<Value Value="B" Decode="2.0 TCIE"></Value>
+				<Value Value="E" Decode="BMW M47 Diesel"></Value>
+				<Value Value="G" Decode="KV6 2.5 UNLEADED"></Value>
+				<Value Value="H" Decode="KV6 2.5 LEADED"></Value>
+				<Value Value="J" Decode="KV6 2.5 ETHANOL"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L359 - 'Old' Freelander - NAS -->
+		<!--****************************************************-->		
+		<DecodeModel id="19">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L314"></Attribute>
+			<Attribute Name="ModelName" Decode="Freelander"></Attribute>
+			<Attribute Name="Market" Decode="NAS, Mexico, China"></Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="1" Decode="3 DOOR"></Value>
+				<Value Value="2" Decode="5 DOOR"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="C" Decode="TL 1"></Value>
+				<Value Value="M" Decode="BASE (NAS) NO BADGE"></Value>
+				<Value Value="Y" Decode="SE BADGE (NAS)"></Value>
+				<Value Value="E" Decode="HSE BADGE (NAS)"></Value>
+				<Value Value="N" Decode="CHINA"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="2" Decode="2002"></Value>
+				<Value Value="3" Decode="2003"></Value>
+				<Value Value="4" Decode="2004"></Value>
+				<Value Value="5" Decode="2005"></Value>
+				<Value Value="6" Decode="2006"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="SOLIHULL"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="8">
+				<Value Value="2" Decode="LHD"></Value>
+				<Value Value="8" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="8">
+				<Value Value="2" Decode="Automatic"></Value>
+				<Value Value="8" Decode="Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="1" Decode="1.8K16 LOU"></Value>
+				<Value Value="2" Decode="KV6 2.5 UNLEADED"></Value>
+				<Value Value="4" Decode="M47"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L359 - New Freelander 								-->
+		<!--****************************************************-->
+		<!-- Version Ref= LF09MY_A.xls Issue:10 16-Oct-2007 -->
+		<!-- Version Ref= LF09MY_C.xls Issue:10 06-Feb-2009 -->
+		<!-- Version Ref= LF11MY_D.xls Issue:10 21-Jan-2010 -->
+		<!-- Version Ref= LF12MY_C.xls Issue: 27-Jul-2010 -->
+		<!-- Last Update: 17-Jan-2012 Ref: LF13MY_C.XLS (09-Dec-2011) -->
+		<!-- Last Update: 13-Jun-2012 Ref: LF13MY_D.XLS (11-Jun-2012) -->
+		<!-- Last Update: 11-Nov-2012 Ref: LF13MY_E.XLS (15-Oct-2012) -->
+		<!-- Last Update: 03-Jan-2013 Ref: LF14MY_A.XLS (09-Dec-2012) -->		
+		<DecodeModel id="20">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L359"></Attribute>
+			<Attribute Name="ModelName" Decode="New Freelander"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="A" Decode="NonNAS"></Value>
+				<Value Value="B" Decode="NonNAS"></Value>
+				<Value Value="J" Decode="NAS"></Value>
+				<Value Value="P" Decode="NAS"></Value>
+				<Value Value="R" Decode="NAS"></Value>
+				<Value Value="S" Decode="NAS"></Value>
+				<Value Value="T" Decode="NAS"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="2" Decode="4 DOOR STATION WAGON"></Value>
+				<Value Value="4" Decode="Commercial"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="STANDARD 4wd"></Value>
+				<Value Value="B" Decode="STANDARD 2wd"></Value>
+				<Value Value="J" Decode="S"></Value>
+				<Value Value="P" Decode="SE"></Value>
+				<Value Value="R" Decode="HSE"></Value>
+				<Value Value="S" Decode="SE Technology Pack"></Value>
+				<Value Value="T" Decode="HSE Technology/Lux Pack"></Value>
+			</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="7" Decode="2007"></Value>
+				<Value Value="8" Decode="2008"></Value>
+				<Value Value="9" Decode="2009"></Value>
+				<Value Value="A" Decode="2010"></Value>
+				<Value Value="B" Decode="2011"></Value>
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>		
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="H" Decode="HALEWOOD"></Value>
+				<Value Value="L" Decode="PUNE"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="7">
+                <Value Value="3" Decode="RHD"></Value>
+                <Value Value="4" Decode="LHD"></Value>
+                <Value Value="7" Decode="RHD"></Value>
+                <Value Value="8" Decode="LHD"></Value>
+                <Value Value="A" Decode="RHD"></Value>
+                <Value Value="B" Decode="LHD"></Value>
+                <Value Value="C" Decode="RHD"></Value>
+                <Value Value="D" Decode="LHD"></Value>
+            </Attribute>
+            <Attribute Name="Transmission" Char="7">
+                <Value Value="3" Decode="Automatic"></Value>
+                <Value Value="4" Decode="Automatic"></Value>
+                <Value Value="7" Decode="Manual"></Value>
+                <Value Value="8" Decode="Manual"></Value>
+                <Value Value="A" Decode="Automatic"></Value>
+                <Value Value="B" Decode="Automatic"></Value>
+                <Value Value="C" Decode="Manual"></Value>
+                <Value Value="D" Decode="Manual"></Value>
+            </Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="A" Decode="SI6 - 3.2 PETROL"></Value>
+				<Value Value="B" Decode="DW12 - 2.2 DIESEL (Low power)"></Value>
+				<Value Value="C" Decode="DW12 - 2.2 DIESEL with cDPF (Low power)"></Value>
+				<Value Value="D" Decode="DW12 - 2.2 DIESEL (High power)"></Value>
+				<Value Value="E" Decode="DW12 - 2.2 DIESEL with cDPF (High power)"></Value>
+				<Value Value="F" Decode="GTDi - 2.0 PETROL (Low power)"></Value>
+				<Value Value="G" Decode="GTDi - 2.0 PETROL (High power)"></Value>
+				<Value Value="N" Decode="SI6 - 3.2 PETROL, ULEV 2 NAS"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L405 - New Range Rover 							-->
+		<!--****************************************************-->
+		<!-- Created: 28-Feb-2012 Ref: LG 13MY Issue 12.XLS (28-Feb-12) -->
+		<!-- Created: 10-Jan-2013 Ref: LG 14MY Issue 05.XLS (26-Nov-12) -->
+		<DecodeModel id="22">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L405"></Attribute>
+			<Attribute Name="ModelName" Decode="New Range Rover"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="A" Decode="NonNAS"></Value>
+				<Value Value="R" Decode="NAS"></Value>
+				<Value Value="S" Decode="NAS"></Value>
+				<Value Value="V" Decode="NAS"></Value>
+				<Value Value="W" Decode="NAS"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="STANDARD"></Value>
+				<Value Value="R" Decode="HSE"></Value>
+				<Value Value="S" Decode="Vogue"></Value>
+				<Value Value="V" Decode="Autobiography"></Value>
+				<Value Value="W" Decode="Autobiography Black"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="2" Decode="5 DOOR STATION WAGON"></Value>
+				<Value Value="3" Decode="LONG WHEEL BASE"></Value>
+				<Value Value="K" Decode="ARMOURED"></Value>					
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="A" Decode="204PT - 2.0 GTDi Petrol"></Value>
+				<Value Value="C" Decode="508PN - AJ V8 5.0 NA Petrol"></Value>
+				<Value Value="D" Decode="508PN - AJ V8 5.0 NA Petrol"></Value>
+				<Value Value="E" Decode="508PS - AJ V8 5.0 SC Petrol"></Value>
+				<Value Value="F" Decode="306DT V6 3.0 Diesel Low Power without cDPF"></Value>
+				<Value Value="G" Decode="204PT - 2.0 GTDi Petrol"></Value>
+				<Value Value="H" Decode="448DT V8 4.4 Diesel without cDPF"></Value>
+				<Value Value="J" Decode="448DT V8 4.4 Diesel with cDPF"></Value>
+				<Value Value="K" Decode="306DT V6 3.0 Diesel Low Power with cDPF"></Value>				
+				<Value Value="L" Decode="306DT V6 3.0 Diesel High Power Hybrid with cDPF"></Value>
+				<Value Value="R" Decode="306DT V6 3.0 Diesel High Power Hybrid without cDPF"></Value>
+				<Value Value="T" Decode="508PS - AJ V8 5.0 SC Petrol"></Value>
+				<Value Value="V" Decode="306PS V6 3.0 SC Petrol"></Value>
+				<Value Value="W" Decode="306PS V6 3.0 SC Petrol"></Value>
+				<Value Value="Z" Decode="306DT - V6 3.0 Diesel Hybrid without cDPF"></Value>			
+			</Attribute>	
+			<Attribute Name="Driver" Char="8">
+                <Value Value="E" Decode="RHD"></Value>
+                <Value Value="F" Decode="LHD"></Value>
+            </Attribute>
+            <Attribute Name="Transmission" Char="8">
+                <Value Value="E" Decode="Automatic 8Spd"></Value>
+                <Value Value="F" Decode="Automatic 8Spd"></Value>
+             </Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="D" Decode="2013"></Value>
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>		
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="Solihull"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L494 - New Range Rover Sport							-->
+		<!--****************************************************-->
+		<!-- Created: 13-Sep-2012 Ref: LW 14MY Issue C.XLS (02-Aug-12) -->
+		<!-- 07-Jan-2012 Ref: LW 14MY Issue J.XLS (26-Nov-12) -->
+		<DecodeModel id="23">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L494"></Attribute>
+			<Attribute Name="ModelName" Decode="New Range Rover Sport"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="A" Decode="NonNAS"></Value>
+				<Value Value="J" Decode="NAS"></Value>
+				<Value Value="G" Decode="NAS"></Value>
+				<Value Value="R" Decode="NAS"></Value>
+				<Value Value="V" Decode="NAS"></Value>				
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="STANDARD"></Value>
+				<Value Value="J" Decode="S"></Value>				
+				<Value Value="G" Decode="SE"></Value>
+				<Value Value="R" Decode="HSE"></Value>
+				<Value Value="V" Decode="Autobiography"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="2" Decode="5 DOOR STATION WAGON"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="7">
+				<Value Value="A" Decode="204PT - 2.0 GTDi Petrol"></Value>
+				<Value Value="B" Decode="306DT V6 3.0 Diesel High Power without cDPF with TSS"></Value>
+				<Value Value="C" Decode="306DT V6 3.0 Diesel Low Power with cDPF without TSS"></Value>
+				<Value Value="E" Decode="508PS AJ V8 5.0 SC Petrol Without TSS"></Value>				
+				<Value Value="F" Decode="306DT V6 3.0 Diesel Low Power without cDPF or TSS"></Value>
+				<Value Value="G" Decode="306DT V6 3.0 Diesel High Power with cDPF or TSS"></Value>
+				<Value Value="H" Decode="448DT V8 4.4 Diesel without cDPF or TSS"></Value>
+				<Value Value="J" Decode="448DT V8 4.4 Diesel with cDPF and TSS"></Value>
+				<Value Value="K" Decode="306DT V6 3.0 Diesel Low Power with cDPF and TSS"></Value>
+				<Value Value="L" Decode="306DT V6 3.0 Diesel Hybrid with cDPF and TSS"></Value>
+				<Value Value="M" Decode="448DT V8 4.4 Diesel without cDPF with TSS"></Value>		
+				<Value Value="P" Decode="306DT V6 3.0 Diesel High Power with cDPF without TSS"></Value>
+				<Value Value="R" Decode="306DT V6 3.0 Diesel High Power without cDPF or TSS"></Value>				
+				<Value Value="T" Decode="508PS - AJ V8 5.0 SC Petrol with TSS"></Value>
+				<Value Value="V" Decode="306PS V6 3.0 SC Petrol Without TSS"></Value>
+				<Value Value="W" Decode="306PS V6 3.0 SC Petrol with TSS"></Value>
+				<Value Value="Z" Decode="306DT V6 3.0 Diesel Hybrid without cDPF"></Value>		
+			</Attribute>
+			<Attribute Name="Driver" Char="8">
+                <Value Value="E" Decode="RHD"></Value>
+                <Value Value="F" Decode="LHD"></Value>
+            </Attribute>
+            <Attribute Name="Transmission" Char="8">
+                <Value Value="E" Decode="Automatic 8Spd"></Value>
+                <Value Value="F" Decode="Automatic 8Spd"></Value>
+             </Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+				<Value Value="G" Decode="2016"></Value>		
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="A" Decode="Solihull"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L538 - Evoque - 12/13MY -->
+		<!--****************************************************-->
+		<!-- Last Update: 17-Jan-2012 Ref: L538 12MY VIN Charts Issue D.XLS (11-Feb-11) -->
+		<!-- Last Update: 13-Jun-2012 Ref: L538 12MY VIN Charts Issue E.XLS (12-Jun-12) -->
+		<DecodeModel id="21">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L538"></Attribute>
+			<Attribute Name="ModelName" Decode="Evoque"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="A" Decode="NonNAS"></Value>
+				<Value Value="B" Decode="NonNAS"></Value>
+				<Value Value="N" Decode="NAS"></Value>
+				<Value Value="P" Decode="NAS"></Value>
+				<Value Value="R" Decode="NAS"></Value>
+				<Value Value="S" Decode="NAS"></Value>
+				<Value Value="T" Decode="NAS"></Value>
+				<Value Value="U" Decode="NAS"></Value>
+				<Value Value="V" Decode="NAS"></Value>
+				</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="1" Decode="3 DOOR COUPE"></Value>
+				<Value Value="2" Decode="5 DOOR STATION WAGON"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="STANDARD - 4wd"></Value>
+				<Value Value="B" Decode="STANDARD - 2wd"></Value>
+				<Value Value="N" Decode="Pure"></Value>
+				<Value Value="P" Decode="Pure Plus"></Value>
+				<Value Value="R" Decode="Pure Premium"></Value>
+				<Value Value="S" Decode="Dynamic"></Value>
+				<Value Value="T" Decode="Dynamic Premium"></Value>
+				<Value Value="U" Decode="Prestige"></Value>
+				<Value Value="V" Decode="Prestige Premium"></Value>
+				</Attribute>
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="C" Decode="2012"></Value>
+				<Value Value="D" Decode="2013"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="H" Decode="HALEWOOD"></Value>
+				<Value Value="L" Decode="PUNE"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="7">
+				<Value Value="A" Decode="RHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="7">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Automatic"></Value>
+				<Value Value="C" Decode="Manual"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+			</Attribute>
+			<Attribute Name="Engine" Char="8">
+				<Value Value="B" Decode="DW12 - 2.2 DIESEL (Low power)"></Value>
+				<Value Value="C" Decode="DW12 - 2.2 DIESEL with cDPF (Low power)"></Value>
+				<Value Value="D" Decode="DW12 - 2.2 DIESEL (High power)"></Value>
+				<Value Value="E" Decode="DW12 - 2.2 DIESEL with cDPF (High power)"></Value>
+				<Value Value="F" Decode="GTDi - 2.0 PETROL (Low power)"></Value>
+				<Value Value="G" Decode="GTDi - 2.0 PETROL"></Value>		
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L538 - Evoque - 14MY Onwards -->
+		<!--****************************************************-->
+		<DecodeModel id="24">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L538"></Attribute>
+			<Attribute Name="ModelName" Decode="Evoque"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="A" Decode="NonNAS"></Value>
+				<Value Value="B" Decode="NonNAS"></Value>
+				<Value Value="E" Decode="NAS"></Value>
+				<Value Value="F" Decode="NAS"></Value>
+				<Value Value="N" Decode="NAS"></Value>
+				<Value Value="P" Decode="NAS"></Value>
+				<Value Value="R" Decode="NAS"></Value>
+				<Value Value="S" Decode="NAS"></Value>
+				<Value Value="T" Decode="NAS"></Value>
+				<Value Value="U" Decode="NAS"></Value>
+				<Value Value="V" Decode="NAS"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="STANDARD - 4wd"></Value>
+				<Value Value="B" Decode="STANDARD - 2wd"></Value>
+				<Value Value="E" Decode="Autobiography"></Value>
+				<Value Value="F" Decode="Autobiography-Dynamic"></Value>
+				<Value Value="N" Decode="Pure"></Value>
+				<Value Value="P" Decode="Pure Plus"></Value>
+				<Value Value="R" Decode="Pure Premium"></Value>
+				<Value Value="S" Decode="Dynamic"></Value>
+				<Value Value="T" Decode="Dynamic Premium"></Value>
+				<Value Value="U" Decode="Prestige"></Value>
+				<Value Value="V" Decode="Prestige Premium"></Value>
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="1" Decode="3 DOOR COUPE"></Value>
+				<Value Value="2" Decode="5 DOOR STATION WAGON"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="7">
+				<Value Value="A" Decode="RHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="7">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Automatic"></Value>
+				<Value Value="C" Decode="Manual"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+			</Attribute>	
+			<Attribute Name="Engine" Char="8">
+				<Value Value="B" Decode="DW12 - 2.2 DIESEL (Low power)"></Value>
+				<Value Value="C" Decode="DW12 - 2.2 DIESEL with cDPF (Low power)"></Value>
+				<Value Value="D" Decode="DW12 - 2.2 DIESEL (High power)"></Value>
+				<Value Value="E" Decode="DW12 - 2.2 DIESEL with cDPF (High power)"></Value>
+				<Value Value="G" Decode="GTDi - 2.0 PETROL"></Value>
+				<Value Value="H" Decode="GTDi - 2.0 PETROL (High power)"></Value>		
+			</Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="E" Decode="2014"></Value>
+				<Value Value="F" Decode="2015"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="H" Decode="HALEWOOD"></Value>
+				<Value Value="L" Decode="PUNE"></Value>
+			</Attribute>
+		</DecodeModel>
+		<!--****************************************************-->
+		<!-- L550 - Freelander Replacement -->
+		<!--****************************************************-->
+		<DecodeModel id="25">
+			<Attribute Name="Brand" Decode="Land Rover"></Attribute>
+			<Attribute Name="Model" Decode="L550"></Attribute>
+			<Attribute Name="ModelName" Decode="L550"></Attribute>
+			<Attribute Name="Market" Char="5">
+				<Value Value="A" Decode="NonNAS"></Value>
+				<Value Value="B" Decode="NonNAS"></Value>
+				<Value Value="J" Decode="NAS"></Value>
+				<Value Value="P" Decode="NAS"></Value>
+				<Value Value="R" Decode="NAS"></Value>
+				<Value Value="S" Decode="NAS"></Value>
+				<Value Value="T" Decode="NAS"></Value>
+				<Value Value="U" Decode="NAS"></Value>
+				<Value Value="V" Decode="NAS"></Value>
+			</Attribute>
+			<Attribute Name="Trim" Char="5">
+				<Value Value="A" Decode="STANDARD - 4wd"></Value>
+				<Value Value="B" Decode="STANDARD - 2wd"></Value>
+				<Value Value="J" Decode="S"></Value>
+				<Value Value="P" Decode="SE"></Value>
+				<Value Value="R" Decode="HSE"></Value>
+				<Value Value="S" Decode="HSE Luxury"></Value>
+				<Value Value="T" Decode=""></Value>
+				<Value Value="U" Decode=""></Value>
+				<Value Value="V" Decode=""></Value>
+
+			</Attribute>
+			<Attribute Name="BodyStyle" Char="6">
+				<Value Value="2" Decode="5 DOOR STATION WAGON"></Value>
+			</Attribute>
+			<Attribute Name="Driver" Char="7">
+				<Value Value="A" Decode="RHD"></Value>
+				<Value Value="B" Decode="LHD"></Value>
+				<Value Value="C" Decode="RHD"></Value>
+				<Value Value="D" Decode="LHD"></Value>
+			</Attribute>
+			<Attribute Name="Transmission" Char="7">
+				<Value Value="A" Decode="Automatic"></Value>
+				<Value Value="B" Decode="Automatic"></Value>
+				<Value Value="C" Decode="Manual"></Value>
+				<Value Value="D" Decode="Manual"></Value>
+			</Attribute>	
+			<Attribute Name="Engine" Char="8">
+				<Value Value="B" Decode="DW12 - 2.2 DIESEL (Low power)"></Value>
+				<Value Value="C" Decode="DW12 - 2.2 DIESEL with cDPF (Low power)"></Value>
+				<Value Value="D" Decode="DW12 - 2.2 DIESEL (High power)"></Value>
+				<Value Value="E" Decode="DW12 - 2.2 DIESEL with cDPF (High power)"></Value>
+				<Value Value="G" Decode="GTDi - 2.0 PETROL"></Value>	
+			</Attribute>			
+			<Attribute Name="ModelYear" Char="10">
+				<Value Value="F" Decode="2015"></Value>
+			</Attribute>
+			<Attribute Name="Plant" Char="11">
+				<Value Value="H" Decode="HALEWOOD"></Value>
+				<Value Value="L" Decode="PUNE"></Value>
+			</Attribute>
+		</DecodeModel>		
+	</Decodes>
+</VINDecode>
