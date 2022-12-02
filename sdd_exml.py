@@ -88,7 +88,7 @@ if sdd_file == None:
 
 # Looks like we have everything we need, lets crack on
 
-# read in the file
+# read in the file - must be read in as a binary file
 file = open(sdd_file,"rb")
 in_data = file.read()
 file.close()
@@ -105,6 +105,7 @@ if out_file != None:
     print('Writing to', out_file)
     # Lets get rid of any old files from previous runs
     if os.path.exists(out_file): os.remove(out_file)
+    # write it out - must be written out as a binary file
     f = open(out_file, "wb")
     f.write(out_data)
     f.close()
