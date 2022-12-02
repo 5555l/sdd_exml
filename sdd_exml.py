@@ -11,26 +11,21 @@ import os
 dkey = b"YmZwZlQrQ3V4dVltNTArWE9s"
 key = DES3.adjust_key_parity(dkey)
 
-enc = dec = False
-sdd_file = out_file = None
+# set the 3DES cipher and options
+cipher = DES3.new(key, DES3.MODE_ECB)
 
 # How to encrypt
-def encrypt(sdd_xml):
-    # set the 3DES cipher and options
-    cipher = DES3.new(key, DES3.MODE_ECB)
-
-    # do the encryption
+def encrypt(sdd_xml,cipher):
     exml = cipher.encrypt(sdd_xml)
     return exml
 
 # How to decrypt
-def decrypt(exml):
-    # set the 3DES cipher and options
-    cipher = DES3.new(key, DES3.MODE_ECB)
-    # do the decryption
+def decrypt(exml,cipher):
     sdd_xml = cipher.decrypt(exml)
-    #sdd_xml = sdd_xml.decode('ascii')
     return sdd_xml
+
+enc = dec = False
+sdd_file = out_file = None
 
 # Get full command-line arguments
 full_cmd_arguments = sys.argv
@@ -100,10 +95,10 @@ file.close()
 
 # If asked, lets go decrypt a file
 if dec == True:
-    out_data = decrypt(in_data)
+    out_data = decrypt(in_data,cipher)
 # if asked, encrypt the file
 elif enc == True:
-    out_data = encrypt(in_data)
+    out_data = encrypt(in_data,cipher)
 
 # If an output filename is given then write it to the file
 if out_file != None:
