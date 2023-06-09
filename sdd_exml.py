@@ -8,24 +8,25 @@ import getopt
 import os
 
 # This is the magic key
-dkey = b"YmZwZlQrQ3V4dVltNTArWE9s"
-key = DES3.adjust_key_parity(dkey)
+cipher_key_binary = b"YmZwZlQrQ3V4dVltNTArWE9s"
 
-# set the 3DES cipher and options
-cipher = DES3.new(key, DES3.MODE_ECB)
+# setup the 3DES cipher and options
+cipher_3des_key = DES3.adjust_key_parity(cipher_key_binary)
+des3_cipher = DES3.new(cipher_3des_key, DES3.MODE_ECB)
 
 # How to encrypt
-def encrypt(sdd_xml,cipher):
-    exml = cipher.encrypt(sdd_xml)
-    return exml
+def encrypt(sdd_xml,des3_cipher):
+    sdd_exml = des3_cipher.encrypt(sdd_xml)
+    return sdd_exml
 
 # How to decrypt
-def decrypt(exml,cipher):
-    sdd_xml = cipher.decrypt(exml)
+def decrypt(sdd_exml,des3_cipher):
+    sdd_xml = des3_cipher.decrypt(sdd_exml)
     return sdd_xml
 
-enc = dec = False
-sdd_file = out_file = None
+# set some defaults
+encrypt_xml = decrypt_exml = False
+sdd_input_file_name = output_file_name = None
 
 # Get full command-line arguments
 full_cmd_arguments = sys.argv
@@ -57,31 +58,31 @@ for current_argument, current_value in arguments:
         print(help_text)
         sys.exit(2)
     elif current_argument in ("-e", "--encrypt"):
-        enc = True
+        encrypt_xml = True
     elif current_argument in ("-d", "--decrypt"):
-        dec = True
+        decrypt_exml = True
     elif current_argument in ("-o", "--output"):
-        out_file = current_value
+        output_file_name = current_value
     elif current_argument in ("-f", "--file"):
-        sdd_file = current_value
-        if os.path.isfile(sdd_file) == False:
-            print('file not found at', sdd_file)
+        sdd_input_file_name = current_value
+        if os.path.isfile(sdd_input_file_name) == False:
+            print('file not found at', sdd_input_file_name)
             sys.exit(2)
 
 # Check we don't have conflicting options set
-if enc == True and dec == True:
+if encrypt_xml == True and decrypt_exml == True:
     print("Both encrypt and decrypt options are set, I've no idea what you want to do")
     print(help_text)
     sys.exit(2)
 
-# Check we have a valid option set
-if enc == False and dec == False:
+# Check we have at least one valid option set
+if encrypt_xml == False and decrypt_exml == False:
     print("Neither encrypt nor decrypt options are set, I've no idea what you want to do")
     print(help_text)
     sys.exit(2)
 
 # Check there is a file to process
-if sdd_file == None:
+if sdd_input_file_name == None:
     print("No file was provided")
     print(help_text)
     sys.exit(2)
@@ -89,26 +90,26 @@ if sdd_file == None:
 # Looks like we have everything we need, lets crack on
 
 # read in the file - must be read in as a binary file
-file = open(sdd_file,"rb")
-in_data = file.read()
-file.close()
+input_file = open(sdd_input_file_name,"rb")
+input_binary_data = input_file.read()
+input_file.close()
 
 # If asked, lets go decrypt a file
-if dec == True:
-    out_data = decrypt(in_data,cipher)
+if decrypt_exml == True:
+    data_to_output = decrypt(input_binary_data,des3_cipher)
 # if asked, encrypt the file
-elif enc == True:
-    out_data = encrypt(in_data,cipher)
+elif encrypt_xml == True:
+    data_to_output = encrypt(input_binary_data,des3_cipher)
 
 # If an output filename is given then write it to the file
-if out_file != None:
-    print('Writing to', out_file)
+if output_file_name != None:
+    print('Writing to', output_file_name)
     # Lets get rid of any old files from previous runs
-    if os.path.exists(out_file): os.remove(out_file)
+    if os.path.exists(output_file_name): os.remove(output_file_name)
     # write it out - must be written out as a binary file
-    f = open(out_file, "wb")
-    f.write(out_data)
-    f.close()
+    output_file = open(output_file_name, "wb")
+    output_file.write(data_to_output)
+    output_file.close()
 else:
     # otherwise output to stdout
-    print(out_data.decode('ascii'))
+    print(data_to_output.decode('ascii'))
